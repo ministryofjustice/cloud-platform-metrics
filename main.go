@@ -35,13 +35,21 @@ func init() {
 
 func main() {
 
-	m := newMetrics()
+	// Create new metrics and register them using the custom registry.
+	m := NewMetrics()
+	// // Add Go module build info.
+	// reg.MustRegister(collectors.NewBuildInfoCollector())
 
-	go serveMetrics(":8080", "/metrics")
-	err := pollForClusterMetrics(m)
-	if err != nil {
-		log.Fatal(err)
-	}
+	// Periodically record some sample latencies for the three services.
+	go func() {
+		for {
+			namespaces, _ := fetchNamespaceDetails(kubeconfig)
+			updateMetrics(namespaces, m)
+			time.Sleep(1 * time.Minute)
+		}
+	}()
+
+	serveMetrics(":8080", "/metrics")
 
 }
 
@@ -49,7 +57,7 @@ type metrics struct {
 	namespace_details *prometheus.GaugeVec
 }
 
-func newMetrics() *metrics {
+func NewMetrics() *metrics {
 
 	m := &metrics{
 		namespace_details: prometheus.NewGaugeVec(prometheus.GaugeOpts{
@@ -85,6 +93,7 @@ func pollForClusterMetrics(m *metrics) error {
 		if err != nil {
 			return err
 		}
+		m.namespace_details.Reset()
 		updateMetrics(namespaces, m)
 		time.Sleep(1 * time.Minute)
 	}
