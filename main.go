@@ -1,43 +1,126 @@
 package main
 
 import (
-	"math/rand"
+	"flag"
+	"log"
 	"net/http"
+	"os"
+	"path/filepath"
+	"time"
 
-	"github.com/go-echarts/go-echarts/v2/charts"
-	"github.com/go-echarts/go-echarts/v2/opts"
-	"github.com/go-echarts/go-echarts/v2/types"
+	"github.com/ministryofjustice/cloud-platform-environments/pkg/authenticate"
+	"github.com/ministryofjustice/cloud-platform-environments/pkg/namespace"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
+	v1 "k8s.io/api/core/v1"
+	"k8s.io/client-go/util/homedir"
 )
 
-// generate random data for line chart
-func generateLineItems() []opts.LineData {
-	items := make([]opts.LineData, 0)
-	for i := 0; i < 7; i++ {
-		items = append(items, opts.LineData{Value: rand.Intn(300)})
+var (
+	kubeconfig  string
+	clusterName string
+	interval    time.Duration
+)
+
+func init() {
+	if home := homedir.HomeDir(); home != "" {
+		flag.StringVar(&kubeconfig, "kubeconfig", filepath.Join(home, ".kube", "config"), "(optional) absolute path to the kubeconfig file")
+	} else {
+		flag.StringVar(&kubeconfig, "kubeconfig", os.Getenv("KUBECONFIG"), "absolute path to the kubeconfig file")
 	}
-	return items
-}
 
-func httpserver(w http.ResponseWriter, _ *http.Request) {
-	// create a new line instance
-	line := charts.NewLine()
-	// set some global options like Title/Legend/ToolTip or anything else
-	line.SetGlobalOptions(
-		charts.WithInitializationOpts(opts.Initialization{Theme: types.ThemeWesteros}),
-		charts.WithTitleOpts(opts.Title{
-			Title:    "Line example in Westeros theme",
-			Subtitle: "Line chart rendered by the http server this time",
-		}))
-
-	// Put data into instance
-	line.SetXAxis([]string{"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"}).
-		AddSeries("Category A", generateLineItems()).
-		AddSeries("Category B", generateLineItems()).
-		SetSeriesOptions(charts.WithLineChartOpts(opts.LineChart{Smooth: true}))
-	line.Render(w)
+	flag.StringVar(&clusterName, "cluster", "arn:aws:eks:eu-west-2:754256621582:cluster/cp-0202-1257", "Kubernetes context specified in kubeconfig")
+	flag.DurationVar(&interval, "interval", 10*time.Second, "How often to poll the cluster and aws for data.")
 }
 
 func main() {
-	http.HandleFunc("/", httpserver)
-	http.ListenAndServe(":8080", nil)
+
+	m := newMetrics()
+
+	go serveMetrics(":8080", "/metrics")
+	err := pollForClusterMetrics(m)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+}
+
+type metrics struct {
+	namespace_details *prometheus.GaugeVec
+}
+
+func newMetrics() *metrics {
+
+	m := &metrics{
+		namespace_details: prometheus.NewGaugeVec(prometheus.GaugeOpts{
+			Name: "namespace_details",
+			Help: "Namespace details from cluster",
+		},
+			[]string{"namespace", "application", "business_unit", "is_production"},
+		),
+	}
+
+	// tweak defaults
+	// see https://github.com/prometheus/client_golang/blob/v1.11.0/prometheus/registry.go#L61
+	defaultRegistry := prometheus.NewRegistry()
+	prometheus.DefaultRegisterer = defaultRegistry
+	prometheus.DefaultGatherer = defaultRegistry
+
+	prometheus.MustRegister(m.namespace_details)
+
+	return m
+}
+
+func serveMetrics(addr, path string) {
+	log.Printf("serveMetrics: addr=%s path=%s", addr, path)
+	//http.Handle(path, promhttp.Handler())
+	http.Handle(path, promhttp.HandlerFor(prometheus.DefaultGatherer, promhttp.HandlerOpts{}))
+	log.Fatal(http.ListenAndServe(addr, nil))
+}
+
+func pollForClusterMetrics(m *metrics) error {
+
+	for {
+		namespaces, err := fetchNamespaceDetails(kubeconfig)
+		if err != nil {
+			return err
+		}
+		updateMetrics(namespaces, m)
+		time.Sleep(1 * time.Minute)
+	}
+}
+
+// Store the namespaces in the clusterMetrics struct
+func updateMetrics(namespaces []v1.Namespace, m *metrics) {
+
+	// get required details of each namespace and store it in namespace map
+	for _, ns := range namespaces {
+		log.Printf("namespace: %s", ns.Name)
+		m.namespace_details.With(
+			prometheus.Labels{
+				"namespace":     ns.Name,
+				"application":   ns.Annotations["cloud-platform.justice.gov.uk/application"],
+				"business_unit": ns.Annotations["cloud-platform.justice.gov.uk/business-unit"],
+				"is_production": ns.Labels["cloud-platform.justice.gov.uk/is-production"],
+			}).Set(1)
+	}
+}
+
+func fetchNamespaceDetails(kubeconfig string) ([]v1.Namespace, error) {
+
+	// Gain access to a Kubernetes cluster using a config file for given cluster context.
+	clientset, err := authenticate.CreateClientFromConfigFile(kubeconfig, clusterName)
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+	if err != nil {
+		return nil, err
+	}
+
+	// Get the list of namespaces from the cluster which is set in the clientset
+	namespaces, err := namespace.GetAllNamespacesFromCluster(clientset)
+	if err != nil {
+		return nil, err
+	}
+	return namespaces, nil
 }
