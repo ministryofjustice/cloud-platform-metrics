@@ -5,10 +5,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 	"time"
 
-	"github.com/ministryofjustice/cloud-platform-cli/pkg/client"
 	"github.com/ministryofjustice/cloud-platform-environments/pkg/namespace"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -18,12 +16,7 @@ import (
 )
 
 var (
-	kubeconfig         string
-	clusterName        string
-	region             string
-	bucket             string
-	configFileLocation string
-	interval           time.Duration
+	interval time.Duration
 )
 
 type metrics struct {
@@ -31,12 +24,6 @@ type metrics struct {
 }
 
 func init() {
-
-	flag.StringVar(&kubeconfig, "kubeconfig", os.Getenv("KUBECONFIG"), "(optional) absolute path to the kubeconfig file")
-	flag.StringVar(&bucket, "bucket", os.Getenv("KUBECONFIG_S3_BUCKET"), "(optional) absolute path to the kubeconfig file")
-	flag.StringVar(&configFileLocation, "configfile", os.Getenv("CONFIG_FILE"), "(optional) absolute path to the kubeconfig file")
-	flag.StringVar(&clusterName, "cluster", "manager.cloud-platform.service.justice.gov.uk", "cluster name to Authenticate to")
-	flag.StringVar(&region, "region", os.Getenv("AWS_REGION"), "AWS region to Authenticate to")
 	flag.DurationVar(&interval, "interval", 10*time.Second, "How often to poll the cluster and aws for data.")
 }
 
@@ -96,32 +83,7 @@ func updateMetrics(namespaces []v1.Namespace, m *metrics) {
 }
 
 func fetchNamespaceDetails() ([]v1.Namespace, error) {
-
-	// creds, err := getCredentials(awsRegion)
-	// if err != nil {
-	// 	return nil, fmt.Errorf("failed to auth to cluster: %w", err)
-	// }
-
-	// clientset, err := cluster.AuthToCluster(clusterName, creds.Eks, kubeconfig, creds.Profile)
-	// if err != nil {
-	// 	return nil, fmt.Errorf("failed to auth to cluster: %w", err)
-	// }
-
-	// Gain access to a Kubernetes cluster using a config file stored in an S3 bucket.
-
-	// err := authenticate.KubeConfigFromS3Bucket(bucket, kubeconfig, region, configFileLocation)
-	// if err != nil {
-	// 	fmt.Println("Error getting kubeconfig from S3 bucket: %s", err)
-	// 	return nil, err
-	// }
-
-	// clientset, err := authenticate.CreateClientFromConfigFile(configFileLocation, clusterName)
-	// if err != nil {
-	// 	fmt.Println("Error creating clientset from config file")
-	// 	return nil, fmt.Errorf("failed to create clientset from cluster: %w", err)
-
-	// }
-
+	// creates the in-cluster config
 	config, err := rest.InClusterConfig()
 	if err != nil {
 		panic(err.Error())
@@ -138,13 +100,4 @@ func fetchNamespaceDetails() ([]v1.Namespace, error) {
 		return nil, fmt.Errorf("failed to GetAllNamespacesFromCluster from cluster: %w", err)
 	}
 	return namespaces, nil
-}
-
-func getCredentials(awsRegion string) (*client.AwsCredentials, error) {
-	creds, err := client.NewAwsCreds(awsRegion)
-	if err != nil {
-		return nil, err
-	}
-
-	return creds, nil
 }

@@ -2,8 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cp-metrics-app
-  annotations:
-    kubernetes.io/psp: privileged
 spec:
   replicas: 1
   selector:
