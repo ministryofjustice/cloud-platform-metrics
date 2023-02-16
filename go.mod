@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/aws/aws-sdk-go-v2 v1.17.4
 	github.com/aws/aws-sdk-go-v2/config v1.18.12
-	github.com/aws/aws-sdk-go-v2/service/costexplorer v1.25.1
+	github.com/aws/aws-sdk-go-v2/service/costexplorer v1.25.2
 	github.com/ministryofjustice/cloud-platform-environments v1.1.4-0.20220630132714-e33e36fba033
 	github.com/prometheus/client_golang v1.14.0
 	k8s.io/api v0.25.2

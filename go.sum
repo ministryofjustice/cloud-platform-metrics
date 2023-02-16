@@ -56,8 +56,8 @@ github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.22 h1:7AwGYXDdqRQYsluvKF
 github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.22/go.mod h1:EqK7gVrIGAHyZItrD1D8B0ilgwMD1GiWAmbU4u/JHNk=
 github.com/aws/aws-sdk-go-v2/internal/ini v1.3.29 h1:J4xhFd6zHhdF9jPP0FQJ6WknzBboGMBNjKOv4iTuw4A=
 github.com/aws/aws-sdk-go-v2/internal/ini v1.3.29/go.mod h1:TwuqRBGzxjQJIwH16/fOZodwXt2Zxa9/cwJC5ke4j7s=
-github.com/aws/aws-sdk-go-v2/service/costexplorer v1.25.1 h1:lK6c98fuNHJNR1qi2Iw51HTP8z0AfC8inn/MRnczioY=
-github.com/aws/aws-sdk-go-v2/service/costexplorer v1.25.1/go.mod h1:pjpJxcuKCaIVBYoAYNFtr6ME5eMTDrB+hk+9TP+EPjA=
+github.com/aws/aws-sdk-go-v2/service/costexplorer v1.25.2 h1:nE81mh3qQ2me1aLZIsqz4oBpbJXzMjrXmTZTXE0JuyE=
+github.com/aws/aws-sdk-go-v2/service/costexplorer v1.25.2/go.mod h1:pjpJxcuKCaIVBYoAYNFtr6ME5eMTDrB+hk+9TP+EPjA=
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.22 h1:LjFQf8hFuMO22HkV5VWGLBvmCLBCLPivUAmpdpnp4Vs=
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.22/go.mod h1:xt0Au8yPIwYXf/GYPy/vl4K3CgwhfQMYbrH7DlUUIws=
 github.com/aws/aws-sdk-go-v2/service/sso v1.12.1 h1:lQKN/LNa3qqu2cDOQZybP7oL4nMGGiFqob0jZJaR8/4=
