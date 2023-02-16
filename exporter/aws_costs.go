@@ -1,4 +1,4 @@
-package aws_costs
+package exporter
 
 import (
 	"context"
@@ -12,6 +12,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/costexplorer"
 	ceTypes "github.com/aws/aws-sdk-go-v2/service/costexplorer/types"
+	"github.com/prometheus/client_golang/prometheus"
 	v1 "k8s.io/api/core/v1"
 )
 
@@ -29,15 +30,17 @@ const MONTHLY_TEAM_COST = 136_000
 
 const DAYS_TOGET_DATA int = 30
 
-func FetchAWSCostDetails(namespaces []v1.Namespace) (*costs, error) {
+func FetchAWSCostDetails(namespaces []v1.Namespace) (costs, error) {
+
 	//create a new costs object
-	c := &costs{
+	c := costs{
 		costPerNamespace: map[string]map[string]float64{},
 	}
+
 	// get Cost and Usage data from aws cost explorer api
 	awsCostUsageData, err := getAwsCostAndUsageData()
 	if err != nil {
-		return nil, fmt.Errorf("failed to getAwsCostAndUsageData: %w", err)
+		return c, fmt.Errorf("failed to getAwsCostAndUsageData: %w", err)
 	}
 
 	// create the resources map for namespaces which are listed in the cluster
@@ -50,7 +53,7 @@ func FetchAWSCostDetails(namespaces []v1.Namespace) (*costs, error) {
 	// update the costs per namespace in a map for all aws resources from CostUsage data
 	err = c.updatecostsByNamespace(awsCostUsageData)
 	if err != nil {
-		return nil, fmt.Errorf("failed to updatecostsByNamespace : %w", err)
+		return c, fmt.Errorf("failed to updatecostsByNamespace : %w", err)
 	}
 
 	// add shared aws resources costs i.e resources which doesnot have namespace tags but global
@@ -113,6 +116,22 @@ func getAwsCostAndUsageData() ([][]string, error) {
 		}
 	}
 	return resultsCosts, nil
+}
+
+// Store the namespaces in the clusterMetrics struct
+func UpdateAWSCostsMetrics(c costs, namespaces []v1.Namespace, e *Exporter) {
+	for _, ns := range namespaces {
+		services := c.costPerNamespace[ns.Name]
+
+		for s, val := range services {
+			e.Metrics.aws_costs.With(
+				prometheus.Labels{
+					"hosted_ns":   ns.Name,
+					"aws_service": s,
+				}).Set(val)
+		}
+
+	}
 }
 
 // updatecostsByNamespace get the aws CostUsageData and update the costPerNamespace

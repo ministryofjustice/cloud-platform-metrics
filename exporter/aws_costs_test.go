@@ -1,4 +1,4 @@
-package aws_costs
+package exporter
 
 import (
 	"testing"
