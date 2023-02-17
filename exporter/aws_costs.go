@@ -12,7 +12,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/costexplorer"
 	ceTypes "github.com/aws/aws-sdk-go-v2/service/costexplorer/types"
-	"github.com/prometheus/client_golang/prometheus"
 	v1 "k8s.io/api/core/v1"
 )
 
@@ -118,22 +117,6 @@ func getAwsCostAndUsageData() ([][]string, error) {
 	return resultsCosts, nil
 }
 
-// Store the namespaces in the clusterMetrics struct
-func UpdateAWSCostsMetrics(c costs, namespaces []v1.Namespace, e *Exporter) {
-	for _, ns := range namespaces {
-		services := c.costPerNamespace[ns.Name]
-
-		for s, val := range services {
-			e.Metrics.aws_costs.With(
-				prometheus.Labels{
-					"hosted_ns":   ns.Name,
-					"aws_service": s,
-				}).Set(val)
-		}
-
-	}
-}
-
 // updatecostsByNamespace get the aws CostUsageData and update the costPerNamespace
 // with resources and map per namespace
 func (c *costs) updatecostsByNamespace(awsCostUsageData [][]string) error {
@@ -141,8 +124,7 @@ func (c *costs) updatecostsByNamespace(awsCostUsageData [][]string) error {
 	for _, col := range awsCostUsageData {
 		cost, err := strconv.ParseFloat(col[2], 64)
 		if err != nil {
-			fmt.Println(err)
-			return err
+			return fmt.Errorf("failed to convert cost to float: %w", err)
 		}
 
 		c.addResource(col[1], col[0], cost)
@@ -180,7 +162,6 @@ func (c *costs) getSharedCosts() float64 {
 
 // addSharedPerNamespace get the shared cost and assign the shared_costs per namespace
 func (c *costs) addSharedPerNamespace(costsPerNs float64) {
-
 	for _, v := range c.costPerNamespace {
 		v["Shared AWS Costs"] = costsPerNs
 	}
@@ -197,7 +178,6 @@ func (c *costs) addSharedTeamCosts() error {
 	for _, v := range c.costPerNamespace {
 		v["Shared CP Team Costs"] = roundedCPCost
 	}
-
 	return nil
 
 }

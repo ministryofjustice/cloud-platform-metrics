@@ -18,8 +18,6 @@ spec:
         ports:
         - containerPort: 8080
         env:
-        - name: KUBECONFIG
-          value: ~/.kube/config
         - name: AWS_REGION
           value: eu-west-2
         - name: AWS_ACCESS_KEY_ID

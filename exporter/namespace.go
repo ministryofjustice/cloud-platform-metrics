@@ -5,7 +5,6 @@ import (
 
 	authenticate "github.com/ministryofjustice/cloud-platform-environments/pkg/authenticate"
 	namespace "github.com/ministryofjustice/cloud-platform-environments/pkg/namespace"
-	"github.com/prometheus/client_golang/prometheus"
 	v1 "k8s.io/api/core/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
@@ -17,7 +16,7 @@ func NewClient(c Config) (*kubernetes.Clientset, error) {
 	if c.inCluster {
 		clientset, err = createKubeClient()
 		if err != nil {
-			return nil, fmt.Errorf("failed to create in cluster kube client: %w", err)
+			return nil, fmt.Errorf("failed to create kube client: %w", err)
 		}
 	} else {
 		clientset, err = authenticate.CreateClientFromConfigFile(c.kubeconfigPath, c.context) // create kube client
@@ -50,18 +49,4 @@ func createKubeClient() (*kubernetes.Clientset, error) {
 		return nil, fmt.Errorf("failed to create clientset: %w", err)
 	}
 	return clientset, nil
-}
-
-// Store the namespaces in the clusterMetrics struct
-func UpdateNSDetailsMetrics(namespaces []v1.Namespace, e *Exporter) {
-	// get required details of each namespace and store it in namespace map
-	for _, ns := range namespaces {
-		e.Metrics.namespace_details.With(
-			prometheus.Labels{
-				"namespace":     ns.Name,
-				"application":   ns.Annotations["cloud-platform.justice.gov.uk/application"],
-				"business_unit": ns.Annotations["cloud-platform.justice.gov.uk/business-unit"],
-				"is_production": ns.Labels["cloud-platform.justice.gov.uk/is-production"],
-			}).Set(1)
-	}
 }

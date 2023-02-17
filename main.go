@@ -1,17 +1,14 @@
 package main
 
 import (
-	"log"
 	"ministryofjustice/cloud-platform-metrics/exporter"
 	"net/http"
 	"os"
-	"time"
 
 	"github.com/go-kit/log/level"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/prometheus/common/promlog"
-	"github.com/prometheus/common/version"
 )
 
 var (
@@ -21,6 +18,7 @@ var (
 
 const (
 	metricsPath = "/metrics"
+	port        = ":8080"
 )
 
 func init() {
@@ -32,43 +30,27 @@ func main() {
 	promlogConfig := &promlog.Config{}
 	logger := promlog.New(promlogConfig)
 
-	level.Info(logger).Log("Starting Cloud Platforme Metrics Exporter", version.Info())
+	level.Info(logger).Log("Starting Cloud Platforme Metrics Exporter")
 
-	exp := exporter.NewExporter(cfg)
+	exp := exporter.NewExporter(cfg, logger)
 
 	prometheus.MustRegister(exp)
 
-	go func() {
-		for {
-			clientset, err := exporter.NewClient(cfg)
-			if err != nil {
-				level.Error(logger).Log("msg", "failed to create kube client", "err", err)
-				os.Exit(1)
-			}
-			namespaces, err := exporter.FetchNamespaceDetails(clientset)
-			if err != nil {
-				level.Error(logger).Log("msg", "failed to fetch namespace details", "err", err)
-				os.Exit(1)
-			}
+	level.Info(logger).Log("serveMetrics: addr=%s path=%s", port, metricsPath)
+	http.Handle(metricsPath, promhttp.HandlerFor(prometheus.DefaultGatherer, promhttp.HandlerOpts{}))
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(`<html>
+             <head><title>Cloud Platform Metrics Exporter</title></head>
+             <body>
+             <h1>Cloud Platform Metrics Exporter</h1>
+             <p><a href='` + metricsPath + `'>Metrics</a></p>
+             </body>
+             </html>`))
+	})
 
-			// get Cost and Usage data from aws cost explorer api
-			awsCostUsageData, err := exporter.FetchAWSCostDetails(namespaces)
-			if err != nil {
-				level.Error(logger).Log("msg", "failed to fetch aws cost details", "err", err)
-				os.Exit(1)
-			}
+	if err := http.ListenAndServe(port, nil); err != nil {
+		level.Error(logger).Log("msg", "failed to serve metrics", "err", err)
+		os.Exit(1)
+	}
 
-			exporter.UpdateNSDetailsMetrics(namespaces, exp)
-			exporter.UpdateAWSCostsMetrics(awsCostUsageData, namespaces, exp)
-			time.Sleep(1 * time.Hour)
-		}
-	}()
-
-	serveMetrics(":8080", "/metrics")
-}
-
-func serveMetrics(addr, path string) {
-	log.Printf("serveMetrics: addr=%s path=%s", addr, path)
-	http.Handle(path, promhttp.HandlerFor(prometheus.DefaultGatherer, promhttp.HandlerOpts{}))
-	log.Fatal(http.ListenAndServe(addr, nil))
 }

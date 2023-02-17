@@ -2,16 +2,17 @@ package exporter
 
 import (
 	"flag"
-	"log"
+
 	"os"
 	"time"
 
+	"github.com/go-kit/log"
 	"github.com/prometheus/client_golang/prometheus"
 )
 
 type Metrics struct {
-	namespace_details *prometheus.GaugeVec
-	aws_costs         *prometheus.GaugeVec
+	namespace_details *prometheus.Desc
+	aws_costs         *prometheus.Desc
 }
 
 type Config struct {
@@ -23,9 +24,9 @@ type Config struct {
 }
 
 type Exporter struct {
+	logger  log.Logger
 	Metrics Metrics
 	Config  Config
-	logger  log.Logger
 }
 
 func Init() Config {

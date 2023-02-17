@@ -1,37 +1,87 @@
 package exporter
 
 import (
+	"github.com/go-kit/log"
+	"github.com/go-kit/log/level"
+
 	"github.com/prometheus/client_golang/prometheus"
 )
 
-func NewExporter(cfg Config) *Exporter {
+const (
+	Namespace = "cloud_platform_metrics"
+)
+
+func NewExporter(cfg Config, logger log.Logger) *Exporter {
 	return &Exporter{
 		Metrics: Metrics{
-			namespace_details: prometheus.NewGaugeVec(prometheus.GaugeOpts{
-				Name: "namespace_details",
-				Help: "Namespace details from cluster",
-			},
+			namespace_details: prometheus.NewDesc(
+				prometheus.BuildFQName(Namespace, "", "namespace_details"),
+				"Namespace details from cluster",
 				[]string{"namespace", "application", "business_unit", "is_production"},
+				prometheus.Labels{},
 			),
-			aws_costs: prometheus.NewGaugeVec(prometheus.GaugeOpts{
-				Name: "aws_costs",
-				Help: "AWS Costs",
-			},
+			aws_costs: prometheus.NewDesc(
+				prometheus.BuildFQName(Namespace, "", "aws_costs"),
+				"AWS Costs",
 				[]string{"aws_service", "hosted_ns"},
+				prometheus.Labels{},
 			),
 		},
 		Config: cfg,
+		logger: logger,
 	}
 }
 
 // Describe implements the prometheus.Collector interface
 func (e *Exporter) Describe(ch chan<- *prometheus.Desc) {
-	e.Metrics.namespace_details.Describe(ch)
-	e.Metrics.aws_costs.Describe(ch)
+	ch <- e.Metrics.namespace_details
+	ch <- e.Metrics.aws_costs
 }
 
 // Collect implements the prometheus.Collector interface
 func (e *Exporter) Collect(ch chan<- prometheus.Metric) {
-	e.Metrics.namespace_details.Collect(ch)
-	e.Metrics.aws_costs.Collect(ch)
+	clientset, err := NewClient(e.Config)
+	if err != nil {
+		level.Error(e.logger).Log("msg", "failed to create kubernetes client", "err", err)
+		return
+	}
+	namespaces, err := FetchNamespaceDetails(clientset)
+	if err != nil {
+		level.Error(e.logger).Log("msg", "failed to fetch namespace details", "err", err)
+		return
+	}
+
+	// get Cost and Usage data from aws cost explorer api
+	awsCostUsageData, err := FetchAWSCostDetails(namespaces)
+	if err != nil {
+		level.Error(e.logger).Log("msg", "failed to fetch aws cost details", "err", err)
+		return
+
+	}
+
+	for _, ns := range namespaces {
+		ch <- prometheus.MustNewConstMetric(
+			e.Metrics.namespace_details,
+			prometheus.GaugeValue,
+			1,
+			ns.Name,
+			ns.Annotations["cloud-platform.justice.gov.uk/application"],
+			ns.Annotations["cloud-platform.justice.gov.uk/business-unit"],
+			ns.Labels["cloud-platform.justice.gov.uk/is-production"],
+		)
+
+	}
+	for _, ns := range namespaces {
+		services := awsCostUsageData.costPerNamespace[ns.Name]
+
+		for s, val := range services {
+			ch <- prometheus.MustNewConstMetric(
+				e.Metrics.aws_costs,
+				prometheus.GaugeValue,
+				val,
+				s,
+				ns.Name,
+			)
+		}
+	}
 }

@@ -8,4 +8,4 @@ spec:
       app: cp-metrics-app 
   endpoints:
   - port: http
-    interval: 15s
+    interval: 24h
