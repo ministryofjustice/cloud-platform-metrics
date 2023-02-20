@@ -113,7 +113,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "aws_costs",
+              "expr": "aws_costs{hosted_ns='$hosted_ns'}",
               "alias": "Total",
               "application": {
                 "filter": ""
@@ -281,7 +281,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "aws_costs{hosted_ns=\'$hosted_ns'}",
+              "expr": "aws_costs{hosted_ns='$hosted_ns'}",
               "alias": "Total",
               "application": {
                 "filter": ""
