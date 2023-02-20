@@ -135,7 +135,7 @@ data:
                 "filter": ""
               },
               "matchExact": true,
-              "metricName": "AWS Costs all namespaces - not stacked yet",
+              "metricName": "AWS Costs $hosted_ns stacked",
               "mode": 0,
               "namespace": "AWS/Billing",
               "options": {
@@ -172,7 +172,7 @@ data:
                 "filter": ""
               },
               "matchExact": true,
-              "metricName": "AWS Costs all namespaces - not stacked yet",
+              "metricName": "AWS Costs $hosted_ns stacked",
               "mode": 0,
               "namespace": "AWS/Billing",
               "options": {
@@ -191,7 +191,175 @@ data:
           "timeFrom": null,
           "timeRegions": [],
           "timeShift": null,
-          "title": "AWS Costs all namespaces - not stacked yet",
+          "title": "AWS Costs $hosted_ns stacked",
+          "tooltip": {
+            "msResolution": false,
+            "shared": true,
+            "sort": 2,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "xaxis": {
+            "buckets": null,
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "currencyGBP",
+              "label": null,
+              "logBase": 1,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "show": false
+            }
+          ],
+          "yaxis": {
+            "align": false,
+            "alignLevel": null
+          }
+        },
+        {
+          "aliasColors": {},
+          "bars": true,
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "Thanos",
+          "editable": true,
+          "error": false,
+          "fieldConfig": {
+            "defaults": {
+              "custom": {},
+              "links": []
+            },
+            "overrides": []
+          },
+          "fill": 1,
+          "fillGradient": 0,
+          "grid": {},
+          "gridPos": {
+            "h": 15,
+            "w": 24,
+            "x": 0,
+            "y": 0
+          },
+          "hiddenSeries": false,
+          "id": 1,
+          "isNew": true,
+          "legend": {
+            "alignAsTable": true,
+            "current": true,
+            "hideEmpty": false,
+            "hideZero": false,
+            "show": true,
+            "sort": "current",
+            "sortDesc": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "connected",
+          "options": {
+            "alertThreshold": true
+          },
+          "percentage": false,
+          "pluginVersion": "7.5.9",
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "spaceLength": 10,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "aws_costs{hosted_ns='$hosted_ns'}",
+              "alias": "Total",
+              "application": {
+                "filter": ""
+              },
+              "dimensions": {
+                "Currency": "USD"
+              },
+              "expression": "",
+              "functions": [],
+              "group": {
+                "filter": ""
+              },
+              "highResolution": false,
+              "host": {
+                "filter": ""
+              },
+              "id": "",
+              "item": {
+                "filter": ""
+              },
+              "matchExact": true,
+              "metricName": "AWS Costs $hosted_ns not stacked",
+              "mode": 0,
+              "namespace": "AWS/Billing",
+              "options": {
+                "showDisabledItems": false
+              },
+              "period": "",
+              "refId": "A",
+              "region": "us-east-1",
+              "returnData": false,
+              "statistics": [
+                "Average"
+              ]
+            },
+            {
+              "alias": "{{ServiceName}}",
+              "application": {
+                "filter": ""
+              },
+              "dimensions": {
+                "Currency": "USD",
+                "ServiceName": "*"
+              },
+              "expression": "",
+              "functions": [],
+              "group": {
+                "filter": ""
+              },
+              "highResolution": false,
+              "host": {
+                "filter": ""
+              },
+              "id": "",
+              "item": {
+                "filter": ""
+              },
+              "matchExact": true,
+              "metricName": "AWS Costs $hosted_ns not stacked",
+              "mode": 0,
+              "namespace": "AWS/Billing",
+              "options": {
+                "showDisabledItems": false
+              },
+              "period": "",
+              "refId": "B",
+              "region": "us-east-1",
+              "returnData": false,
+              "statistics": [
+                "Average"
+              ]
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeRegions": [],
+          "timeShift": null,
+          "title": "AWS Costs $hosted_ns not stacked",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -277,11 +445,11 @@ data:
           "renderer": "flot",
           "seriesOverrides": [],
           "spaceLength": 10,
-          "stack": false,
+          "stack": true,
           "steppedLine": false,
           "targets": [
             {
-              "expr": "aws_costs{hosted_ns='$hosted_ns'}",
+              "expr": "aws_costs",
               "alias": "Total",
               "application": {
                 "filter": ""
@@ -303,7 +471,7 @@ data:
                 "filter": ""
               },
               "matchExact": true,
-              "metricName": "AWS Costs all namespaces - not stacked yet",
+              "metricName": "AWS Costs all namespaces",
               "mode": 0,
               "namespace": "AWS/Billing",
               "options": {
@@ -340,7 +508,7 @@ data:
                 "filter": ""
               },
               "matchExact": true,
-              "metricName": "AWS Costs all namespaces - not stacked yet",
+              "metricName": "AWS Costs all namespaces",
               "mode": 0,
               "namespace": "AWS/Billing",
               "options": {
@@ -359,7 +527,7 @@ data:
           "timeFrom": null,
           "timeRegions": [],
           "timeShift": null,
-          "title": "AWS Costs '$hosted_ns'",
+          "title": "AWS Costs all namespaces",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -495,7 +663,7 @@ data:
         ]
       },
       "timezone": "browser",
-      "title": "Application Alerts",
+      "title": "AWS_Costs",
       "uid": "application-alerts",
       "version": 1
     }
