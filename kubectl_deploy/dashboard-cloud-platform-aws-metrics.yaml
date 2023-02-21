@@ -9,34 +9,32 @@ metadata:
 data:
   dashboard-aws-costs.json: |
     {
-      "__inputs": [],
-      "__requires": [
-        {
-          "type": "grafana",
-          "id": "grafana",
-          "name": "Grafana",
-          "version": "5.4.2"
-        },
-        {
-          "type": "panel",
-          "id": "graph",
-          "name": "Graph",
-          "version": "5.0.0"
-        },
-        {
-          "type": "datasource",
-          "id": "prometheus",
-          "name": "Prometheus",
-          "version": "5.0.0"
-        },
-        {
-          "type": "panel",
-          "id": "text",
-          "name": "Text",
-          "version": "5.0.0"
-        }
-      ],
-    {
+    	"__inputs": [],
+    	"__requires": [{
+    			"type": "datasource",
+    			"id": "hosted_ns",
+    			"name": "Thanos",
+    			"version": "1.0.0"
+    		},
+    		{
+    			"type": "grafana",
+    			"id": "grafana",
+    			"name": "Grafana",
+    			"version": "7.4.1"
+    		},
+    		{
+    			"type": "panel",
+    			"id": "graph",
+    			"name": "Graph",
+    			"version": ""
+    		},
+    		{
+    			"type": "panel",
+    			"id": "text",
+    			"name": "Text",
+    			"version": ""
+    		}
+    	],
     	"annotations": {
     		"list": [{
     			"builtIn": 1,
@@ -110,34 +108,78 @@ data:
     			"stack": true,
     			"steppedLine": false,
     			"targets": [{
-                                "exemplar": true,
-    				"expr": "aws_costs{hosted_ns='$hosted_ns'}"
+    					"expr": "aws_costs{hosted_ns='$hosted_ns'}",
+    					"application": {
+    						"filter": ""
+    					},
+    					"dimensions": {
+    						"Currency": "USD"
+    					},
+    					"expression": "",
+    					"functions": [],
+    					"group": {
+    						"filter": ""
+    					},
+    					"highResolution": false,
+    					"host": {
+    						"filter": ""
+    					},
+    					"id": "",
+    					"item": {
+    						"filter": ""
+    					},
+    					"matchExact": true,
+    					"metricName": "AWS Service Costs $hosted_ns",
+    					"mode": 0,
+    					"namespace": "monitoring",
+    					"options": {
+    						"showDisabledItems": false
+    					},
+    					"period": "",
+    					"refId": "A",
+    					"region": "us-east-1",
+    					"returnData": false,
+    					"statistics": [
+    						"Average"
+    					]
     				},
-    				"expression": "",
-    				"functions": [],
-    				"group": {
-    					"filter": ""
-    				},
-    				"highResolution": false,
-    				"host": {
-    					"filter": ""
-    				},
-    				"id": "",
-    				"item": {
-    					"filter": ""
-    				},
-    				"matchExact": true,
-    				"metricName": "AWS Service Costs $hosted_ns",
-    				"mode": 0,
-    				"namespace": "monitoring",
-    				"options": {
-    					"showDisabledItems": false
-    				},
-    				"period": "",
-    				"refId": "A",
-    				"returnData": false
-    				]
-    			}],
+    				{
+    					"application": {
+    						"filter": ""
+    					},
+    					"dimensions": {
+    						"Currency": "USD",
+    						"ServiceName": "*"
+    					},
+    					"expression": "",
+    					"functions": [],
+    					"group": {
+    						"filter": ""
+    					},
+    					"highResolution": false,
+    					"host": {
+    						"filter": ""
+    					},
+    					"id": "",
+    					"item": {
+    						"filter": ""
+    					},
+    					"matchExact": true,
+    					"metricName": "AWS Service Costs $hosted_ns",
+    					"mode": 0,
+    					"namespace": "monitoring",
+    					"options": {
+    						"showDisabledItems": false
+    					},
+    					"period": "",
+    					"refId": "B",
+    					"region": "us-east-1",
+    					"returnData": false,
+    					"statistics": [
+    						"Average"
+    					]
+    				}
+    			],
     			"thresholds": [],
     			"timeFrom": null,
     			"timeRegions": [],
@@ -230,8 +272,12 @@ data:
     			"stack": false,
     			"steppedLine": false,
     			"targets": [{
-                                        "exemplar": true,
-    					"expr": "sum (aws_costs{hosted_ns='$hosted_ns'})"
+    					"expr": "sum (aws_costs{hosted_ns='$hosted_ns'})",
+    					"application": {
+    						"filter": ""
+    					},
+    					"dimensions": {
+    						"Currency": "USD"
     					},
     					"expression": "",
     					"functions": [],
@@ -255,10 +301,19 @@ data:
     					},
     					"period": "",
     					"refId": "A",
-    					"returnData": false
+    					"returnData": false,
+    					"statistics": [
+    						"Average"
     					]
     				},
     				{
+    					"application": {
+    						"filter": ""
+    					},
+    					"dimensions": {
+    						"Currency": "USD",
+    						"ServiceName": "*"
+    					},
     					"expression": "",
     					"functions": [],
     					"group": {
@@ -281,7 +336,9 @@ data:
     					},
     					"period": "",
     					"refId": "B",
-    					"returnData": false
+    					"returnData": false,
+    					"statistics": [
+    						"Average"
     					]
     				}
     			],
@@ -377,8 +434,12 @@ data:
     			"stack": true,
     			"steppedLine": false,
     			"targets": [{
-                                        "exemplar": true,
-    					"expr": "sum (aws_costs) by (hosted_ns)"
+    					"expr": "sum (aws_costs) by (hosted_ns)",
+    					"application": {
+    						"filter": ""
+    					},
+    					"dimensions": {
+    						"Currency": "USD"
     					},
     					"expression": "",
     					"functions": [],
@@ -402,10 +463,19 @@ data:
     					},
     					"period": "",
     					"refId": "A",
-    					"returnData": false
+    					"returnData": false,
+    					"statistics": [
+    						"Average"
     					]
     				},
     				{
+    					"application": {
+    						"filter": ""
+    					},
+    					"dimensions": {
+    						"Currency": "USD",
+    						"ServiceName": "*"
+    					},
     					"expression": "",
     					"functions": [],
     					"group": {
@@ -428,7 +498,9 @@ data:
     					},
     					"period": "",
     					"refId": "B",
-    					"returnData": false
+    					"returnData": false,
+    					"statistics": [
+    						"Average"
     					]
     				}
     			],

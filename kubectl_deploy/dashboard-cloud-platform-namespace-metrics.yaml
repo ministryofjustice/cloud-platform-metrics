@@ -9,34 +9,32 @@ metadata:
 data:
   dashboard-namespace-metrics.json: |
     {
-      "__inputs": [],
-      "__requires": [
-        {
-          "type": "grafana",
-          "id": "grafana",
-          "name": "Grafana",
-          "version": "5.4.2"
-        },
-        {
-          "type": "panel",
-          "id": "graph",
-          "name": "Graph",
-          "version": "5.0.0"
-        },
-        {
-          "type": "datasource",
-          "id": "prometheus",
-          "name": "Prometheus",
-          "version": "5.0.0"
-        },
-        {
-          "type": "panel",
-          "id": "text",
-          "name": "Text",
-          "version": "5.0.0"
-        }
-      ],
-    {
+    	"__inputs": [],
+    	"__requires": [{
+    			"type": "datasource",
+    			"id": "hosted_ns",
+    			"name": "Thanos",
+    			"version": "1.0.0"
+    		},
+    		{
+    			"type": "grafana",
+    			"id": "grafana",
+    			"name": "Grafana",
+    			"version": "7.4.1"
+    		},
+    		{
+    			"type": "panel",
+    			"id": "graph",
+    			"name": "Graph",
+    			"version": ""
+    		},
+    		{
+    			"type": "panel",
+    			"id": "text",
+    			"name": "Text",
+    			"version": ""
+    		}
+    	],
     	"annotations": {
     		"list": [{
     			"builtIn": 1,
@@ -48,7 +46,7 @@ data:
     			"type": "dashboard"
     		}]
     	},
-    	"description": "Visualize Total number of all Namespaces (Production and Non-Production)",
+    	"description": "Visualize estimated AWS costs per Namespace/Service",
     	"editable": false,
     	"gnetId": 139,
     	"graphTooltip": 0,
@@ -107,37 +105,81 @@ data:
     			"renderer": "flot",
     			"seriesOverrides": [],
     			"spaceLength": 10,
-    			"stack": false,
+    			"stack": true,
     			"steppedLine": false,
     			"targets": [{
-                                "exemplar": true,
-    				"expr": "count(namespace_details{is_production="true"})"
+    					"expr": "count(namespace_details{is_production='true'})",
+    					"application": {
+    						"filter": ""
+    					},
+    					"dimensions": {
+    						"Currency": "USD"
+    					},
+    					"expression": "",
+    					"functions": [],
+    					"group": {
+    						"filter": ""
+    					},
+    					"highResolution": false,
+    					"host": {
+    						"filter": ""
+    					},
+    					"id": "",
+    					"item": {
+    						"filter": ""
+    					},
+    					"matchExact": true,
+    					"metricName": "Total number of production Namespaces",
+    					"mode": 0,
+    					"namespace": "monitoring",
+    					"options": {
+    						"showDisabledItems": false
+    					},
+    					"period": "",
+    					"refId": "A",
+    					"region": "us-east-1",
+    					"returnData": false,
+    					"statistics": [
+    						"Average"
+    					]
     				},
-    				"expression": "",
-    				"functions": [],
-    				"group": {
-    					"filter": ""
-    				},
-    				"highResolution": false,
-    				"host": {
-    					"filter": ""
-    				},
-    				"id": "",
-    				"item": {
-    					"filter": ""
-    				},
-    				"matchExact": true,
-    				"metricName": "Total number of production Namespaces",
-    				"mode": 0,
-    				"namespace": "monitoring",
-    				"options": {
-    					"showDisabledItems": false
-    				},
-    				"period": "",
-    				"refId": "A",
-    				"returnData": false
-    				]
-    			}],
+    				{
+    					"application": {
+    						"filter": ""
+    					},
+    					"dimensions": {
+    						"Currency": "USD",
+    						"ServiceName": "*"
+    					},
+    					"expression": "",
+    					"functions": [],
+    					"group": {
+    						"filter": ""
+    					},
+    					"highResolution": false,
+    					"host": {
+    						"filter": ""
+    					},
+    					"id": "",
+    					"item": {
+    						"filter": ""
+    					},
+    					"matchExact": true,
+    					"metricName": "Total number of production Namespaces",
+    					"mode": 0,
+    					"namespace": "monitoring",
+    					"options": {
+    						"showDisabledItems": false
+    					},
+    					"period": "",
+    					"refId": "B",
+    					"region": "us-east-1",
+    					"returnData": false,
+    					"statistics": [
+    						"Average"
+    					]
+    				}
+    			],
     			"thresholds": [],
     			"timeFrom": null,
     			"timeRegions": [],
@@ -230,8 +272,12 @@ data:
     			"stack": false,
     			"steppedLine": false,
     			"targets": [{
-                                        "exemplar": true,
-    					"expr": "count(namespace_details{is_production="false"})"
+    					"expr": "count(namespace_details{is_production='false'})",
+    					"application": {
+    						"filter": ""
+    					},
+    					"dimensions": {
+    						"Currency": "USD"
     					},
     					"expression": "",
     					"functions": [],
@@ -255,10 +301,19 @@ data:
     					},
     					"period": "",
     					"refId": "A",
-    					"returnData": false
+    					"returnData": false,
+    					"statistics": [
+    						"Average"
     					]
     				},
     				{
+    					"application": {
+    						"filter": ""
+    					},
+    					"dimensions": {
+    						"Currency": "USD",
+    						"ServiceName": "*"
+    					},
     					"expression": "",
     					"functions": [],
     					"group": {
@@ -281,7 +336,9 @@ data:
     					},
     					"period": "",
     					"refId": "B",
-    					"returnData": false
+    					"returnData": false,
+    					"statistics": [
+    						"Average"
     					]
     				}
     			],
@@ -377,8 +434,12 @@ data:
     			"stack": true,
     			"steppedLine": false,
     			"targets": [{
-                                        "exemplar": true,
-    					"expr": "count(namespace_details)"
+    					"expr": "count(namespace_details)",
+    					"application": {
+    						"filter": ""
+    					},
+    					"dimensions": {
+    						"Currency": "USD"
     					},
     					"expression": "",
     					"functions": [],
@@ -402,10 +463,19 @@ data:
     					},
     					"period": "",
     					"refId": "A",
-    					"returnData": false
+    					"returnData": false,
+    					"statistics": [
+    						"Average"
     					]
     				},
     				{
+    					"application": {
+    						"filter": ""
+    					},
+    					"dimensions": {
+    						"Currency": "USD",
+    						"ServiceName": "*"
+    					},
     					"expression": "",
     					"functions": [],
     					"group": {
@@ -428,7 +498,9 @@ data:
     					},
     					"period": "",
     					"refId": "B",
-    					"returnData": false
+    					"returnData": false,
+    					"statistics": [
+    						"Average"
     					]
     				}
     			],
@@ -436,7 +508,7 @@ data:
     			"timeFrom": null,
     			"timeRegions": [],
     			"timeShift": null,
-    			"title": "Total number of  all Namespaces",
+    			"title": "Total number of all Namespaces",
     			"tooltip": {
     				"msResolution": false,
     				"shared": true,
@@ -499,8 +571,7 @@ data:
     	"schemaVersion": 27,
     	"style": "dark",
     	"tags": [
-    		"namespaces",
-                "metrics",
+    		"metrics",
     		"monitoring"
     	],
     	"templating": {
