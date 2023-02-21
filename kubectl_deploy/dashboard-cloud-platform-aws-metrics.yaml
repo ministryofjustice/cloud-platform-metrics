@@ -114,7 +114,6 @@ data:
           "targets": [
             {
               "expr": "aws_costs{hosted_ns='$hosted_ns'}",
-              "alias": "Total",
               "application": {
                 "filter": ""
               },
@@ -135,9 +134,9 @@ data:
                 "filter": ""
               },
               "matchExact": true,
-              "metricName": "AWS Costs $hosted_ns stacked",
+              "metricName": "AWS Service Costs $hosted_ns",
               "mode": 0,
-              "namespace": "AWS/Billing",
+              "namespace": "monitoring",
               "options": {
                 "showDisabledItems": false
               },
@@ -150,7 +149,6 @@ data:
               ]
             },
             {
-              "alias": "{{ServiceName}}",
               "application": {
                 "filter": ""
               },
@@ -172,9 +170,9 @@ data:
                 "filter": ""
               },
               "matchExact": true,
-              "metricName": "AWS Costs $hosted_ns stacked",
+              "metricName": "AWS Service Costs $hosted_ns",
               "mode": 0,
-              "namespace": "AWS/Billing",
+              "namespace": "monitoring",
               "options": {
                 "showDisabledItems": false
               },
@@ -191,7 +189,7 @@ data:
           "timeFrom": null,
           "timeRegions": [],
           "timeShift": null,
-          "title": "AWS Costs $hosted_ns stacked",
+          "title": "AWS Service Costs $hosted_ns",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -281,8 +279,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "aws_costs{hosted_ns='$hosted_ns'}",
-              "alias": "Total",
+              "expr": "sum (aws_costs{hosted_ns='$hosted_ns'})",
               "application": {
                 "filter": ""
               },
@@ -303,22 +300,20 @@ data:
                 "filter": ""
               },
               "matchExact": true,
-              "metricName": "AWS Costs $hosted_ns not stacked",
+              "metricName": "AWS Namespace Costs $hosted_ns",
               "mode": 0,
-              "namespace": "AWS/Billing",
+              "namespace": "monitoring",
               "options": {
                 "showDisabledItems": false
               },
               "period": "",
               "refId": "A",
-              "region": "us-east-1",
               "returnData": false,
               "statistics": [
                 "Average"
               ]
             },
             {
-              "alias": "{{ServiceName}}",
               "application": {
                 "filter": ""
               },
@@ -340,15 +335,14 @@ data:
                 "filter": ""
               },
               "matchExact": true,
-              "metricName": "AWS Costs $hosted_ns not stacked",
+              "metricName": "AWS Namespace Costs $hosted_ns",
               "mode": 0,
-              "namespace": "AWS/Billing",
+              "namespace": "monitoring",
               "options": {
                 "showDisabledItems": false
               },
               "period": "",
               "refId": "B",
-              "region": "us-east-1",
               "returnData": false,
               "statistics": [
                 "Average"
@@ -359,7 +353,7 @@ data:
           "timeFrom": null,
           "timeRegions": [],
           "timeShift": null,
-          "title": "AWS Costs $hosted_ns not stacked",
+          "title": "AWS Namespace Costs $hosted_ns",
           "tooltip": {
             "msResolution": false,
             "shared": true,
@@ -449,8 +443,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "aws_costs",
-              "alias": "Total",
+              "expr": "sum (aws_costs) by (hosted_ns)",
               "application": {
                 "filter": ""
               },
@@ -471,22 +464,20 @@ data:
                 "filter": ""
               },
               "matchExact": true,
-              "metricName": "AWS Costs all namespaces",
+              "metricName": "AWS Namespace Costs All Namespaces",
               "mode": 0,
-              "namespace": "AWS/Billing",
+              "namespace": "monitoring",
               "options": {
                 "showDisabledItems": false
               },
               "period": "",
               "refId": "A",
-              "region": "us-east-1",
               "returnData": false,
               "statistics": [
                 "Average"
               ]
             },
             {
-              "alias": "{{ServiceName}}",
               "application": {
                 "filter": ""
               },
@@ -508,15 +499,14 @@ data:
                 "filter": ""
               },
               "matchExact": true,
-              "metricName": "AWS Costs all namespaces",
+              "metricName": "AWS Namespace Costs All Namespaces",
               "mode": 0,
-              "namespace": "AWS/Billing",
+              "namespace": "monitoring",
               "options": {
                 "showDisabledItems": false
               },
               "period": "",
               "refId": "B",
-              "region": "us-east-1",
               "returnData": false,
               "statistics": [
                 "Average"
@@ -527,7 +517,7 @@ data:
           "timeFrom": null,
           "timeRegions": [],
           "timeShift": null,
-          "title": "AWS Costs all namespaces",
+          "title": "AWS Namespace Costs All Namespaces",
           "tooltip": {
             "msResolution": false,
             "shared": true,
