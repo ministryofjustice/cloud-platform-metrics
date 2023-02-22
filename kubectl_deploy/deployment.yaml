@@ -13,23 +13,23 @@ spec:
         app: cp-metrics-app
     spec:
       containers:
-      - name: cp-metrics-app
-        image: poornimak/cloud-platform-metrics:0.10
-        ports:
-        - containerPort: 8080
-        env:
-        - name: KUBECONFIG
-          value: ~/.kube/config
-        - name: AWS_REGION
-          value: eu-west-2
-        - name: AWS_ACCESS_KEY_ID
-          valueFrom:
-            secretKeyRef:
-              name: aws-creds
-              key: access-key-id
-        - name: AWS_SECRET_ACCESS_KEY
-          valueFrom:
-            secretKeyRef:
-              name: aws-creds
-              key: secret-access-key
+        - name: cp-metrics-app
+          image: poornimak/cloud-platform-metrics:0.10
+          ports:
+            - containerPort: 8080
+          env:
+            - name: KUBECONFIG
+              value: ~/.kube/config
+            - name: AWS_REGION
+              value: eu-west-2
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: aws-creds
+                  key: access-key-id
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: aws-creds
+                  key: secret-access-key
       serviceAccountName: cloud-platform-metrics-sa

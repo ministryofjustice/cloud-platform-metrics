@@ -5,7 +5,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: cp-metrics-app 
+      app: cp-metrics-app
   endpoints:
-  - port: http
-    interval: 15s
+    - port: http
+      interval: 15s
