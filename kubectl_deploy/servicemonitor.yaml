@@ -7,5 +7,6 @@ spec:
     matchLabels:
       app: cp-metrics-app
   endpoints:
-    - port: http
-      interval: 15s
+  - port: http
+    interval: 24h
+>>>>>>> origin/main
