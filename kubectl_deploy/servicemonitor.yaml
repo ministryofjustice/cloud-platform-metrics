@@ -9,4 +9,3 @@ spec:
   endpoints:
   - port: http
     interval: 24h
->>>>>>> origin/main
