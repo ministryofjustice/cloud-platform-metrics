@@ -55,7 +55,7 @@ data:
     	"links": [],
     	"panels": [{
     			"aliasColors": {},
-    			"bars": true,
+    			"bars": false,
     			"dashLength": 10,
     			"dashes": false,
     			"datasource": "Thanos",
@@ -105,15 +105,12 @@ data:
     			"renderer": "flot",
     			"seriesOverrides": [],
     			"spaceLength": 10,
-    			"stack": true,
+    			"stack": false,
     			"steppedLine": false,
     			"targets": [{
     					"expr": "count(namespace_details{is_production='true'})",
     					"application": {
     						"filter": ""
-    					},
-    					"dimensions": {
-    						"Currency": "USD"
     					},
     					"expression": "",
     					"functions": [],
@@ -146,10 +143,6 @@ data:
     				{
     					"application": {
     						"filter": ""
-    					},
-    					"dimensions": {
-    						"Currency": "USD",
-    						"ServiceName": "*"
     					},
     					"expression": "",
     					"functions": [],
@@ -200,7 +193,6 @@ data:
     				"values": []
     			},
     			"yaxes": [{
-    					"format": "currencyGBP",
     					"label": null,
     					"logBase": 1,
     					"show": true
@@ -212,14 +204,15 @@ data:
     					"show": false
     				}
     			],
-    			"yaxis": {
+    			"yaxis": 
+                                "decimals": 0,{
     				"align": false,
     				"alignLevel": null
     			}
     		},
     		{
     			"aliasColors": {},
-    			"bars": true,
+    			"bars": false,
     			"dashLength": 10,
     			"dashes": false,
     			"datasource": "Thanos",
@@ -276,9 +269,6 @@ data:
     					"application": {
     						"filter": ""
     					},
-    					"dimensions": {
-    						"Currency": "USD"
-    					},
     					"expression": "",
     					"functions": [],
     					"group": {
@@ -309,10 +299,6 @@ data:
     				{
     					"application": {
     						"filter": ""
-    					},
-    					"dimensions": {
-    						"Currency": "USD",
-    						"ServiceName": "*"
     					},
     					"expression": "",
     					"functions": [],
@@ -362,7 +348,6 @@ data:
     				"values": []
     			},
     			"yaxes": [{
-    					"format": "currencyGBP",
     					"label": null,
     					"logBase": 1,
     					"show": true
@@ -375,13 +360,14 @@ data:
     				}
     			],
     			"yaxis": {
+                                "decimals": 0,
     				"align": false,
     				"alignLevel": null
     			}
     		},
     		{
     			"aliasColors": {},
-    			"bars": true,
+    			"bars": false,
     			"dashLength": 10,
     			"dashes": false,
     			"datasource": "Thanos",
@@ -438,9 +424,6 @@ data:
     					"application": {
     						"filter": ""
     					},
-    					"dimensions": {
-    						"Currency": "USD"
-    					},
     					"expression": "",
     					"functions": [],
     					"group": {
@@ -471,10 +454,6 @@ data:
     				{
     					"application": {
     						"filter": ""
-    					},
-    					"dimensions": {
-    						"Currency": "USD",
-    						"ServiceName": "*"
     					},
     					"expression": "",
     					"functions": [],
@@ -525,7 +504,6 @@ data:
     			},
     			"yaxes": [{
     					"$$hashKey": "object:75",
-    					"format": "currencyGBP",
     					"label": null,
     					"logBase": 1,
     					"show": true
@@ -539,6 +517,7 @@ data:
     				}
     			],
     			"yaxis": {
+                                "decimals": 0,
     				"align": false,
     				"alignLevel": null
     			}
@@ -574,39 +553,6 @@ data:
     		"metrics",
     		"monitoring"
     	],
-    	"templating": {
-    		"list": [{
-    			"allValue": null,
-    			"current": {
-    				"selected": true,
-    				"text": "manage-recalls-prod",
-    				"value": "manage-recalls-prod"
-    			},
-    			"datasource": "Thanos",
-    			"definition": "label_values(aws_costs{}, hosted_ns)",
-    			"description": null,
-    			"error": null,
-    			"hide": 0,
-    			"includeAll": false,
-    			"label": null,
-    			"multi": false,
-    			"name": "hosted_ns",
-    			"options": [],
-    			"query": {
-    				"query": "label_values(aws_costs{}, hosted_ns)",
-    				"refId": "StandardVariableQuery"
-    			},
-    			"refresh": 1,
-    			"regex": "",
-    			"skipUrlSync": false,
-    			"sort": 1,
-    			"tagValuesQuery": "",
-    			"tags": [],
-    			"tagsQuery": "",
-    			"type": "query",
-    			"useTags": false
-    		}]
-    	},
     	"time": {
     		"from": "now-1h",
     		"to": "now"

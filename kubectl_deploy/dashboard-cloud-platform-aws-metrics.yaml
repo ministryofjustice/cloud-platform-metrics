@@ -55,7 +55,7 @@ data:
     	"links": [],
     	"panels": [{
     			"aliasColors": {},
-    			"bars": true,
+    			"bars": false,
     			"dashLength": 10,
     			"dashes": false,
     			"datasource": "Thanos",
@@ -129,7 +129,7 @@ data:
     						"filter": ""
     					},
     					"matchExact": true,
-    					"metricName": "AWS Service Costs $hosted_ns",
+    					"metricName": "PWS Service Costs $hosted_ns",
     					"mode": 0,
     					"namespace": "monitoring",
     					"options": {
@@ -184,7 +184,7 @@ data:
     			"timeFrom": null,
     			"timeRegions": [],
     			"timeShift": null,
-    			"title": "AWS Service Costs $hosted_ns",
+    			"title": "PWS Service Costs $hosted_ns",
     			"tooltip": {
     				"msResolution": false,
     				"shared": true,
@@ -381,7 +381,7 @@ data:
     		},
     		{
     			"aliasColors": {},
-    			"bars": true,
+    			"bars": false,
     			"dashLength": 10,
     			"dashes": false,
     			"datasource": "Thanos",
@@ -417,7 +417,7 @@ data:
     				"total": false,
     				"values": true
     			},
-    			"lines": false,
+    			"lines": true,
     			"linewidth": 2,
     			"links": [],
     			"nullPointMode": "connected",
@@ -432,7 +432,7 @@ data:
     			"seriesOverrides": [],
     			"spaceLength": 10,
     			"stack": true,
-    			"steppedLine": false,
+    			"steppedLine": true,
     			"targets": [{
     					"expr": "sum (aws_costs) by (hosted_ns)",
     					"application": {
