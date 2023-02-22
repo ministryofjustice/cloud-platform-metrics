@@ -32,9 +32,9 @@ type Exporter struct {
 func Init() Config {
 
 	var (
-		ctx            = flag.String("context", "arn:aws:eks:eu-west-2:754256621582:cluster/cp-0202-1257", "Kubernetes context specified in kubeconfig")
+		ctx            = flag.String("context", "live.cloud-platform.service.justice.gov.uk", "Kubernetes context specified in kubeconfig")
 		kubeconfigPath = flag.String("kubeconfig", os.Getenv("KUBECONFIG"), "Name of kubeconfig file in S3 bucket")
-		inCluster      = flag.Bool("in-cluster", false, "Use in-cluster config")
+		inCluster      = flag.Bool("in-cluster", true, "Use in-cluster config")
 		interval       = flag.Duration("interval", 10*time.Second, "How often to poll the cluster and aws for data.")
 		region         = flag.String("region", os.Getenv("AWS_REGION"), "AWS Region")
 	)
