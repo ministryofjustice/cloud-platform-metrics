@@ -7,7 +7,7 @@ spec:
     matchLabels:
       app: cp-metrics-app
   endpoints:
-  - interval: 240s
-    port: http
-    scrapeTimeout: 180s
-    path: metrics
+    - interval: 240s
+      port: http
+      scrapeTimeout: 180s
+      path: metrics
