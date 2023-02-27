@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: aws-metrics-costs
+  name: aws-costs
   namespace: monitoring
   labels:
     grafana_dashboard: ""
@@ -108,7 +108,7 @@ data:
     			"stack": true,
     			"steppedLine": false,
     			"targets": [{
-    					"expr": "aws_costs{hosted_ns='$hosted_ns'}",
+    					"expr": "cloud_platform_metrics_aws_costs{hosted_ns='$hosted_ns'}",
     					"application": {
     						"filter": ""
     					},
@@ -129,7 +129,7 @@ data:
     						"filter": ""
     					},
     					"matchExact": true,
-    					"metricName": "PWS Service Costs $hosted_ns",
+    					"metricName": "AWS Service Costs $hosted_ns",
     					"mode": 0,
     					"namespace": "monitoring",
     					"options": {
@@ -184,7 +184,7 @@ data:
     			"timeFrom": null,
     			"timeRegions": [],
     			"timeShift": null,
-    			"title": "PWS Service Costs $hosted_ns",
+    			"title": "AWS Service Costs $hosted_ns",
     			"tooltip": {
     				"msResolution": false,
     				"shared": true,
@@ -272,7 +272,7 @@ data:
     			"stack": false,
     			"steppedLine": false,
     			"targets": [{
-    					"expr": "sum (aws_costs{hosted_ns='$hosted_ns'})",
+    					"expr": "sum (cloud_platform_metrics_aws_costs{hosted_ns='$hosted_ns'})",
     					"application": {
     						"filter": ""
     					},
@@ -434,7 +434,7 @@ data:
     			"stack": true,
     			"steppedLine": true,
     			"targets": [{
-    					"expr": "sum (aws_costs) by (hosted_ns)",
+    					"expr": "sum (cloud_platform_metrics_aws_costs) by (hosted_ns)",
     					"application": {
     						"filter": ""
     					},
@@ -583,7 +583,7 @@ data:
     				"value": "manage-recalls-prod"
     			},
     			"datasource": "Thanos",
-    			"definition": "label_values(aws_costs{}, hosted_ns)",
+    			"definition": "label_values(cloud_platform_metrics_aws_costs{}, hosted_ns)",
     			"description": null,
     			"error": null,
     			"hide": 0,
@@ -593,7 +593,7 @@ data:
     			"name": "hosted_ns",
     			"options": [],
     			"query": {
-    				"query": "label_values(aws_costs{}, hosted_ns)",
+    				"query": "label_values(cloud_platform_metrics_aws_costs{}, hosted_ns)",
     				"refId": "StandardVariableQuery"
     			},
     			"refresh": 1,
@@ -637,7 +637,7 @@ data:
     		]
     	},
     	"timezone": "browser",
-    	"title": "AWS_Costs",
+    	"title": "aws_costs",
     	"uid": "aws_costs",
     	"version": 1
     }

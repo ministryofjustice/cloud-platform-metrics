@@ -5,7 +5,7 @@ metadata:
   name: namespace-metrics
   namespace: monitoring
   labels:
-    grafana_dashboard: ""
+    grafana_dashboard: "cloud-platform-metrics"
 data:
   dashboard-namespace-metrics.json: |
     {
@@ -108,7 +108,7 @@ data:
     			"stack": false,
     			"steppedLine": false,
     			"targets": [{
-    					"expr": "count(namespace_details{is_production='true'})",
+    					"expr": "count(cloud_platform_metrics_namespace_details{is_production='true'})",
     					"application": {
     						"filter": ""
     					},
@@ -204,8 +204,8 @@ data:
     					"show": false
     				}
     			],
-    			"yaxis": 
-                                "decimals": 0,{
+    			"yaxis": {
+                                "decimals": 0, 
     				"align": false,
     				"alignLevel": null
     			}
@@ -265,7 +265,7 @@ data:
     			"stack": false,
     			"steppedLine": false,
     			"targets": [{
-    					"expr": "count(namespace_details{is_production='false'})",
+    					"expr": "count(cloud_platform_metrics_namespace_details{is_production='false'})",
     					"application": {
     						"filter": ""
     					},
@@ -403,7 +403,7 @@ data:
     				"total": false,
     				"values": true
     			},
-    			"lines": false,
+    			"lines": true,
     			"linewidth": 2,
     			"links": [],
     			"nullPointMode": "connected",
@@ -420,7 +420,7 @@ data:
     			"stack": true,
     			"steppedLine": false,
     			"targets": [{
-    					"expr": "count(namespace_details)",
+    					"expr": "count(cloud_platform_metrics_namespace_details)",
     					"application": {
     						"filter": ""
     					},
