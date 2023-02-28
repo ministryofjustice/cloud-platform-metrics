@@ -112,37 +112,6 @@ data:
     					"statistics": [
     						"Average"
     					]
-    				},
-    				{
-    					"application": {
-    						"filter": ""
-    					},
-    					"expression": "",
-    					"functions": [],
-    					"group": {
-    						"filter": ""
-    					},
-    					"highResolution": false,
-    					"host": {
-    						"filter": ""
-    					},
-    					"id": "",
-    					"item": {
-    						"filter": ""
-    					},
-    					"matchExact": true,
-    					"metricName": "Total number of production Namespaces",
-    					"mode": 0,
-    					"namespace": "monitoring",
-    					"options": {
-    						"showDisabledItems": false
-    					},
-    					"period": "",
-    					"refId": "B",
-    					"returnData": false,
-    					"statistics": [
-    						"Average"
-    					]
     				}
     			],
     			"thresholds": [],
@@ -263,37 +232,6 @@ data:
     					},
     					"period": "",
     					"refId": "A",
-    					"returnData": false,
-    					"statistics": [
-    						"Average"
-    					]
-    				},
-    				{
-    					"application": {
-    						"filter": ""
-    					},
-    					"expression": "",
-    					"functions": [],
-    					"group": {
-    						"filter": ""
-    					},
-    					"highResolution": false,
-    					"host": {
-    						"filter": ""
-    					},
-    					"id": "",
-    					"item": {
-    						"filter": ""
-    					},
-    					"matchExact": true,
-    					"metricName": "Total number of non-production Namespaces",
-    					"mode": 0,
-    					"namespace": "monitoring",
-    					"options": {
-    						"showDisabledItems": false
-    					},
-    					"period": "",
-    					"refId": "B",
     					"returnData": false,
     					"statistics": [
     						"Average"
@@ -422,37 +360,6 @@ data:
     					"statistics": [
     						"Average"
     					]
-    				},
-    				{
-    					"application": {
-    						"filter": ""
-    					},
-    					"expression": "",
-    					"functions": [],
-    					"group": {
-    						"filter": ""
-    					},
-    					"highResolution": false,
-    					"host": {
-    						"filter": ""
-    					},
-    					"id": "",
-    					"item": {
-    						"filter": ""
-    					},
-    					"matchExact": true,
-    					"metricName": "Total number of all Namespaces",
-    					"mode": 0,
-    					"namespace": "monitoring",
-    					"options": {
-    						"showDisabledItems": false
-    					},
-    					"period": "",
-    					"refId": "B",
-    					"returnData": false,
-    					"statistics": [
-    						"Average"
-    					]
     				}
     			],
     			"thresholds": [],
@@ -573,37 +480,6 @@ data:
     					},
     					"period": "",
     					"refId": "A",
-    					"returnData": false,
-    					"statistics": [
-    						"Average"
-    					]
-    				},
-    				{
-    					"application": {
-    						"filter": ""
-    					},
-    					"expression": "",
-    					"functions": [],
-    					"group": {
-    						"filter": ""
-    					},
-    					"highResolution": false,
-    					"host": {
-    						"filter": ""
-    					},
-    					"id": "",
-    					"item": {
-    						"filter": ""
-    					},
-    					"matchExact": true,
-    					"metricName": "Unique Applications",
-    					"mode": 0,
-    					"namespace": "monitoring",
-    					"options": {
-    						"showDisabledItems": false
-    					},
-    					"period": "",
-    					"refId": "B",
     					"returnData": false,
     					"statistics": [
     						"Average"
