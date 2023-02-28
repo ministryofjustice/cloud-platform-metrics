@@ -2,39 +2,13 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: aws-costs
-  namespace: monitoring
+  name: aws-costs-metrics
+  namespace: cloud-platform-metrics
   labels:
     grafana_dashboard: ""
 data:
-  dashboard-aws-costs.json: |
+  dashboard-aws-costs-metrics.json: |
     {
-    	"__inputs": [],
-    	"__requires": [{
-    			"type": "datasource",
-    			"id": "hosted_ns",
-    			"name": "Thanos",
-    			"version": "1.0.0"
-    		},
-    		{
-    			"type": "grafana",
-    			"id": "grafana",
-    			"name": "Grafana",
-    			"version": "7.4.1"
-    		},
-    		{
-    			"type": "panel",
-    			"id": "graph",
-    			"name": "Graph",
-    			"version": ""
-    		},
-    		{
-    			"type": "panel",
-    			"id": "text",
-    			"name": "Text",
-    			"version": ""
-    		}
-    	],
     	"annotations": {
     		"list": [{
     			"builtIn": 1,
@@ -106,14 +80,11 @@ data:
     			"seriesOverrides": [],
     			"spaceLength": 10,
     			"stack": true,
-    			"steppedLine": false,
+    			"steppedLine": true,
     			"targets": [{
     					"expr": "cloud_platform_metrics_aws_costs{hosted_ns='$hosted_ns'}",
     					"application": {
     						"filter": ""
-    					},
-    					"dimensions": {
-    						"Currency": "USD"
     					},
     					"expression": "",
     					"functions": [],
@@ -137,43 +108,6 @@ data:
     					},
     					"period": "",
     					"refId": "A",
-    					"region": "us-east-1",
-    					"returnData": false,
-    					"statistics": [
-    						"Average"
-    					]
-    				},
-    				{
-    					"application": {
-    						"filter": ""
-    					},
-    					"dimensions": {
-    						"Currency": "USD",
-    						"ServiceName": "*"
-    					},
-    					"expression": "",
-    					"functions": [],
-    					"group": {
-    						"filter": ""
-    					},
-    					"highResolution": false,
-    					"host": {
-    						"filter": ""
-    					},
-    					"id": "",
-    					"item": {
-    						"filter": ""
-    					},
-    					"matchExact": true,
-    					"metricName": "AWS Service Costs $hosted_ns",
-    					"mode": 0,
-    					"namespace": "monitoring",
-    					"options": {
-    						"showDisabledItems": false
-    					},
-    					"period": "",
-    					"refId": "B",
-    					"region": "us-east-1",
     					"returnData": false,
     					"statistics": [
     						"Average"
@@ -216,10 +150,10 @@ data:
     				"align": false,
     				"alignLevel": null
     			}
-    		},
+                 },
     		{
     			"aliasColors": {},
-    			"bars": true,
+    			"bars": false,
     			"dashLength": 10,
     			"dashes": false,
     			"datasource": "Thanos",
@@ -269,15 +203,12 @@ data:
     			"renderer": "flot",
     			"seriesOverrides": [],
     			"spaceLength": 10,
-    			"stack": false,
-    			"steppedLine": false,
+    			"stack": true,
+    			"steppedLine": true,
     			"targets": [{
     					"expr": "sum (cloud_platform_metrics_aws_costs{hosted_ns='$hosted_ns'})",
     					"application": {
     						"filter": ""
-    					},
-    					"dimensions": {
-    						"Currency": "USD"
     					},
     					"expression": "",
     					"functions": [],
@@ -305,14 +236,103 @@ data:
     					"statistics": [
     						"Average"
     					]
+    				}
+    			],
+    			"thresholds": [],
+    			"timeFrom": null,
+    			"timeRegions": [],
+    			"timeShift": null,
+    			"title": "AWS Namespace Costs $hosted_ns",
+    			"tooltip": {
+    				"msResolution": false,
+    				"shared": true,
+    				"sort": 2,
+    				"value_type": "cumulative"
+    			},
+    			"type": "graph",
+    			"xaxis": {
+    				"buckets": null,
+    				"mode": "time",
+    				"name": null,
+    				"show": true,
+    				"values": []
+    			},
+    			"yaxes": [{
+    					"format": "currencyGBP",
+    					"label": null,
+    					"logBase": 1,
+    					"show": true
     				},
     				{
+    					"format": "short",
+    					"label": null,
+    					"logBase": 1,
+    					"show": false
+    				}
+    			],
+    			"yaxis": {
+    				"align": false,
+    				"alignLevel": null
+    			}
+    		},
+                 {
+                         "aliasColors": {},
+    			"bars": false,
+    			"dashLength": 10,
+    			"dashes": false,
+    			"datasource": "Thanos",
+    			"editable": true,
+    			"error": false,
+    			"fieldConfig": {
+    				"defaults": {
+    					"custom": {},
+    					"links": []
+    				},
+    				"overrides": []
+    			},
+    			"fill": 1,
+    			"fillGradient": 0,
+    			"grid": {},
+    			"gridPos": {
+    				"h": 15,
+    				"w": 24,
+    				"x": 0,
+    				"y": 0
+    			},
+    			"hiddenSeries": false,
+    			"id": 1,
+    			"isNew": true,
+    			"legend": {
+    				"alignAsTable": true,
+    				"current": true,
+    				"hideEmpty": false,
+    				"hideZero": false,
+    				"show": true,
+    				"sort": "current",
+    				"sortDesc": true,
+    				"total": false,
+    				"values": true
+    			},
+    			"lines": true,
+    			"linewidth": 2,
+    			"links": [],
+    			"nullPointMode": "connected",
+    			"options": {
+    				"alertThreshold": true
+    			},
+    			"percentage": false,
+    			"pluginVersion": "7.5.9",
+    			"pointradius": 5,
+    			"points": false,
+    			"renderer": "flot",
+    			"seriesOverrides": [],
+    			"spaceLength": 10,
+    			"stack": true,
+    			"steppedLine": true,
+    			"targets": [{
+    					"expr": "sum (cloud_platform_metrics_aws_costs)/count(cloud_platform_metrics_namespace_details)",
     					"application": {
     						"filter": ""
-    					},
-    					"dimensions": {
-    						"Currency": "USD",
-    						"ServiceName": "*"
     					},
     					"expression": "",
     					"functions": [],
@@ -328,14 +348,14 @@ data:
     						"filter": ""
     					},
     					"matchExact": true,
-    					"metricName": "AWS Namespace Costs $hosted_ns",
+    					"metricName": "Average AWS Cost Per Namespace",
     					"mode": 0,
     					"namespace": "monitoring",
     					"options": {
     						"showDisabledItems": false
     					},
     					"period": "",
-    					"refId": "B",
+    					"refId": "A",
     					"returnData": false,
     					"statistics": [
     						"Average"
@@ -346,7 +366,7 @@ data:
     			"timeFrom": null,
     			"timeRegions": [],
     			"timeShift": null,
-    			"title": "AWS Namespace Costs $hosted_ns",
+    			"title": "Average AWS Cost Per Namespace",
     			"tooltip": {
     				"msResolution": false,
     				"shared": true,
@@ -434,12 +454,9 @@ data:
     			"stack": true,
     			"steppedLine": true,
     			"targets": [{
-    					"expr": "sum (cloud_platform_metrics_aws_costs) by (hosted_ns)",
+    					"expr": "sum (cloud_platform_metrics_aws_costs)",
     					"application": {
     						"filter": ""
-    					},
-    					"dimensions": {
-    						"Currency": "USD"
     					},
     					"expression": "",
     					"functions": [],
@@ -463,41 +480,6 @@ data:
     					},
     					"period": "",
     					"refId": "A",
-    					"returnData": false,
-    					"statistics": [
-    						"Average"
-    					]
-    				},
-    				{
-    					"application": {
-    						"filter": ""
-    					},
-    					"dimensions": {
-    						"Currency": "USD",
-    						"ServiceName": "*"
-    					},
-    					"expression": "",
-    					"functions": [],
-    					"group": {
-    						"filter": ""
-    					},
-    					"highResolution": false,
-    					"host": {
-    						"filter": ""
-    					},
-    					"id": "",
-    					"item": {
-    						"filter": ""
-    					},
-    					"matchExact": true,
-    					"metricName": "AWS Namespace Costs All Namespaces",
-    					"mode": 0,
-    					"namespace": "monitoring",
-    					"options": {
-    						"showDisabledItems": false
-    					},
-    					"period": "",
-    					"refId": "B",
     					"returnData": false,
     					"statistics": [
     						"Average"
@@ -542,29 +524,6 @@ data:
     				"align": false,
     				"alignLevel": null
     			}
-    		},
-    		{
-    			"datasource": "Thanos",
-    			"editable": true,
-    			"error": false,
-    			"fieldConfig": {
-    				"defaults": {
-    					"custom": {}
-    				},
-    				"overrides": []
-    			},
-    			"gridPos": {
-    				"h": 3,
-    				"w": 24,
-    				"x": 0,
-    				"y": 25
-    			},
-    			"id": 2,
-    			"isNew": true,
-    			"links": [],
-    			"options": []
-
-
     		}
     	],
     	"refresh": false,
@@ -608,7 +567,7 @@ data:
     		}]
     	},
     	"time": {
-    		"from": "now-1h",
+    		"from": "now-7d",
     		"to": "now"
     	},
     	"timepicker": {
@@ -637,7 +596,7 @@ data:
     		]
     	},
     	"timezone": "browser",
-    	"title": "aws_costs",
-    	"uid": "aws_costs",
+    	"title": "aws_costs_metrics",
+    	"uid": "aws_costs_metrics",
     	"version": 1
     }
