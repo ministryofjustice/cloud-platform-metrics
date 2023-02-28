@@ -9,32 +9,6 @@ metadata:
 data:
   dashboard-namespace-metrics.json: |
     {
-    	"__inputs": [],
-    	"__requires": [{
-    			"type": "datasource",
-    			"id": "hosted_ns",
-    			"name": "Thanos",
-    			"version": "1.0.0"
-    		},
-    		{
-    			"type": "grafana",
-    			"id": "grafana",
-    			"name": "Grafana",
-    			"version": "7.4.1"
-    		},
-    		{
-    			"type": "panel",
-    			"id": "graph",
-    			"name": "Graph",
-    			"version": ""
-    		},
-    		{
-    			"type": "panel",
-    			"id": "text",
-    			"name": "Text",
-    			"version": ""
-    		}
-    	],
     	"annotations": {
     		"list": [{
     			"builtIn": 1,
@@ -106,7 +80,7 @@ data:
     			"seriesOverrides": [],
     			"spaceLength": 10,
     			"stack": false,
-    			"steppedLine": false,
+    			"steppedLine": true,
     			"targets": [{
     					"expr": "count(cloud_platform_metrics_namespace_details{is_production='true'})",
     					"application": {
@@ -134,7 +108,6 @@ data:
     					},
     					"period": "",
     					"refId": "A",
-    					"region": "us-east-1",
     					"returnData": false,
     					"statistics": [
     						"Average"
@@ -166,7 +139,6 @@ data:
     					},
     					"period": "",
     					"refId": "B",
-    					"region": "us-east-1",
     					"returnData": false,
     					"statistics": [
     						"Average"
@@ -263,7 +235,7 @@ data:
     			"seriesOverrides": [],
     			"spaceLength": 10,
     			"stack": false,
-    			"steppedLine": false,
+    			"steppedLine": true,
     			"targets": [{
     					"expr": "count(cloud_platform_metrics_namespace_details{is_production='false'})",
     					"application": {
@@ -417,8 +389,8 @@ data:
     			"renderer": "flot",
     			"seriesOverrides": [],
     			"spaceLength": 10,
-    			"stack": true,
-    			"steppedLine": false,
+    			"stack": false,
+    			"steppedLine": true,
     			"targets": [{
     					"expr": "count(cloud_platform_metrics_namespace_details)",
     					"application": {
@@ -503,6 +475,161 @@ data:
     				"values": []
     			},
     			"yaxes": [{
+    					"label": null,
+    					"logBase": 1,
+    					"show": true
+    				},
+    				{
+    					"format": "short",
+    					"label": null,
+    					"logBase": 1,
+    					"show": false
+    				}
+    			],
+    			"yaxis": {
+                                "decimals": 0,
+    				"align": false,
+    				"alignLevel": null
+    			}
+    		},
+    		{
+    			"aliasColors": {},
+    			"bars": false,
+    			"dashLength": 10,
+    			"dashes": false,
+    			"datasource": "Thanos",
+    			"editable": true,
+    			"error": false,
+    			"fieldConfig": {
+    				"defaults": {
+    					"custom": {},
+    					"links": []
+    				},
+    				"overrides": []
+    			},
+    			"fill": 1,
+    			"fillGradient": 0,
+    			"grid": {},
+    			"gridPos": {
+    				"h": 10,
+    				"w": 24,
+    				"x": 0,
+    				"y": 15
+    			},
+    			"hiddenSeries": false,
+    			"id": 3,
+    			"isNew": true,
+    			"legend": {
+    				"alignAsTable": true,
+    				"current": true,
+    				"hideEmpty": false,
+    				"hideZero": false,
+    				"show": true,
+    				"sort": "current",
+    				"sortDesc": true,
+    				"total": false,
+    				"values": true
+    			},
+    			"lines": true,
+    			"linewidth": 2,
+    			"links": [],
+    			"nullPointMode": "connected",
+    			"options": {
+    				"alertThreshold": true
+    			},
+    			"percentage": false,
+    			"pluginVersion": "7.5.9",
+    			"pointradius": 5,
+    			"points": false,
+    			"renderer": "flot",
+    			"seriesOverrides": [],
+    			"spaceLength": 10,
+    			"stack": false,
+    			"steppedLine": true,
+    			"targets": [{
+    					"expr": "count(count(cloud_platform_metrics_namespace_details{application=~'.*'}) by (application))",
+    					"application": {
+    						"filter": ""
+    					},
+    					"expression": "",
+    					"functions": [],
+    					"group": {
+    						"filter": ""
+    					},
+    					"highResolution": false,
+    					"host": {
+    						"filter": ""
+    					},
+    					"id": "",
+    					"item": {
+    						"filter": ""
+    					},
+    					"matchExact": true,
+    					"metricName": "Unique Applications",
+    					"mode": 0,
+    					"namespace": "monitoring",
+    					"options": {
+    						"showDisabledItems": false
+    					},
+    					"period": "",
+    					"refId": "A",
+    					"returnData": false,
+    					"statistics": [
+    						"Average"
+    					]
+    				},
+    				{
+    					"application": {
+    						"filter": ""
+    					},
+    					"expression": "",
+    					"functions": [],
+    					"group": {
+    						"filter": ""
+    					},
+    					"highResolution": false,
+    					"host": {
+    						"filter": ""
+    					},
+    					"id": "",
+    					"item": {
+    						"filter": ""
+    					},
+    					"matchExact": true,
+    					"metricName": "Unique Applications",
+    					"mode": 0,
+    					"namespace": "monitoring",
+    					"options": {
+    						"showDisabledItems": false
+    					},
+    					"period": "",
+    					"refId": "B",
+    					"returnData": false,
+    					"statistics": [
+    						"Average"
+    					]
+    				}
+    			],
+    			"thresholds": [],
+    			"timeFrom": null,
+    			"timeRegions": [],
+    			"timeShift": null,
+    			"title": "Unique Applications",
+    			"tooltip": {
+    				"msResolution": false,
+    				"shared": true,
+    				"sort": 2,
+    				"value_type": "cumulative"
+    			},
+    			"type": "graph",
+    			"xaxis": {
+    				"buckets": null,
+    				"mode": "time",
+    				"name": null,
+    				"show": true,
+    				"values": []
+    			},
+    			"yaxes": [{
     					"$$hashKey": "object:75",
     					"label": null,
     					"logBase": 1,
@@ -521,29 +648,6 @@ data:
     				"align": false,
     				"alignLevel": null
     			}
-    		},
-    		{
-    			"datasource": "Thanos",
-    			"editable": true,
-    			"error": false,
-    			"fieldConfig": {
-    				"defaults": {
-    					"custom": {}
-    				},
-    				"overrides": []
-    			},
-    			"gridPos": {
-    				"h": 3,
-    				"w": 24,
-    				"x": 0,
-    				"y": 25
-    			},
-    			"id": 2,
-    			"isNew": true,
-    			"links": [],
-    			"options": []
-
-
     		}
     	],
     	"refresh": false,
