@@ -2,12 +2,12 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: aws-costs
+  name: aws-costs-metrics
   namespace: monitoring
   labels:
     grafana_dashboard: ""
 data:
-  dashboard-aws-costs.json: |
+  dashboard-aws-costs-metrics.json: |
     {
     	"__inputs": [],
     	"__requires": [{
@@ -112,9 +112,6 @@ data:
     					"application": {
     						"filter": ""
     					},
-    					"dimensions": {
-    						"Currency": "USD"
-    					},
     					"expression": "",
     					"functions": [],
     					"group": {
@@ -146,10 +143,6 @@ data:
     				{
     					"application": {
     						"filter": ""
-    					},
-    					"dimensions": {
-    						"Currency": "USD",
-    						"ServiceName": "*"
     					},
     					"expression": "",
     					"functions": [],
@@ -276,9 +269,6 @@ data:
     					"application": {
     						"filter": ""
     					},
-    					"dimensions": {
-    						"Currency": "USD"
-    					},
     					"expression": "",
     					"functions": [],
     					"group": {
@@ -309,10 +299,6 @@ data:
     				{
     					"application": {
     						"filter": ""
-    					},
-    					"dimensions": {
-    						"Currency": "USD",
-    						"ServiceName": "*"
     					},
     					"expression": "",
     					"functions": [],
@@ -438,9 +424,6 @@ data:
     					"application": {
     						"filter": ""
     					},
-    					"dimensions": {
-    						"Currency": "USD"
-    					},
     					"expression": "",
     					"functions": [],
     					"group": {
@@ -471,10 +454,6 @@ data:
     				{
     					"application": {
     						"filter": ""
-    					},
-    					"dimensions": {
-    						"Currency": "USD",
-    						"ServiceName": "*"
     					},
     					"expression": "",
     					"functions": [],
@@ -637,7 +616,7 @@ data:
     		]
     	},
     	"timezone": "browser",
-    	"title": "aws_costs",
-    	"uid": "aws_costs",
+    	"title": "aws_costs_metrics",
+    	"uid": "aws_costs_metrics",
     	"version": 1
     }
