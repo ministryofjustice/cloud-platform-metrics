@@ -9,32 +9,6 @@ metadata:
 data:
   dashboard-aws-costs-metrics.json: |
     {
-    	"__inputs": [],
-    	"__requires": [{
-    			"type": "datasource",
-    			"id": "hosted_ns",
-    			"name": "Thanos",
-    			"version": "1.0.0"
-    		},
-    		{
-    			"type": "grafana",
-    			"id": "grafana",
-    			"name": "Grafana",
-    			"version": "7.4.1"
-    		},
-    		{
-    			"type": "panel",
-    			"id": "graph",
-    			"name": "Graph",
-    			"version": ""
-    		},
-    		{
-    			"type": "panel",
-    			"id": "text",
-    			"name": "Text",
-    			"version": ""
-    		}
-    	],
     	"annotations": {
     		"list": [{
     			"builtIn": 1,
@@ -106,7 +80,7 @@ data:
     			"seriesOverrides": [],
     			"spaceLength": 10,
     			"stack": true,
-    			"steppedLine": false,
+    			"steppedLine": true,
     			"targets": [{
     					"expr": "cloud_platform_metrics_aws_costs{hosted_ns='$hosted_ns'}",
     					"application": {
@@ -134,7 +108,6 @@ data:
     					},
     					"period": "",
     					"refId": "A",
-    					"region": "us-east-1",
     					"returnData": false,
     					"statistics": [
     						"Average"
@@ -166,7 +139,6 @@ data:
     					},
     					"period": "",
     					"refId": "B",
-    					"region": "us-east-1",
     					"returnData": false,
     					"statistics": [
     						"Average"
@@ -212,7 +184,7 @@ data:
     		},
     		{
     			"aliasColors": {},
-    			"bars": true,
+    			"bars": false,
     			"dashLength": 10,
     			"dashes": false,
     			"datasource": "Thanos",
@@ -262,8 +234,8 @@ data:
     			"renderer": "flot",
     			"seriesOverrides": [],
     			"spaceLength": 10,
-    			"stack": false,
-    			"steppedLine": false,
+    			"stack": true,
+    			"steppedLine": true,
     			"targets": [{
     					"expr": "sum (cloud_platform_metrics_aws_costs{hosted_ns='$hosted_ns'})",
     					"application": {
@@ -420,7 +392,7 @@ data:
     			"stack": true,
     			"steppedLine": true,
     			"targets": [{
-    					"expr": "sum (cloud_platform_metrics_aws_costs) by (hosted_ns)",
+    					"expr": "sum (cloud_platform_metrics_aws_costs)",
     					"application": {
     						"filter": ""
     					},
@@ -521,29 +493,6 @@ data:
     				"align": false,
     				"alignLevel": null
     			}
-    		},
-    		{
-    			"datasource": "Thanos",
-    			"editable": true,
-    			"error": false,
-    			"fieldConfig": {
-    				"defaults": {
-    					"custom": {}
-    				},
-    				"overrides": []
-    			},
-    			"gridPos": {
-    				"h": 3,
-    				"w": 24,
-    				"x": 0,
-    				"y": 25
-    			},
-    			"id": 2,
-    			"isNew": true,
-    			"links": [],
-    			"options": []
-
-
     		}
     	],
     	"refresh": false,
