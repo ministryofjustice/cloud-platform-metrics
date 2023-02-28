@@ -112,37 +112,6 @@ data:
     					"statistics": [
     						"Average"
     					]
-    				},
-    				{
-    					"application": {
-    						"filter": ""
-    					},
-    					"expression": "",
-    					"functions": [],
-    					"group": {
-    						"filter": ""
-    					},
-    					"highResolution": false,
-    					"host": {
-    						"filter": ""
-    					},
-    					"id": "",
-    					"item": {
-    						"filter": ""
-    					},
-    					"matchExact": true,
-    					"metricName": "AWS Service Costs $hosted_ns",
-    					"mode": 0,
-    					"namespace": "monitoring",
-    					"options": {
-    						"showDisabledItems": false
-    					},
-    					"period": "",
-    					"refId": "B",
-    					"returnData": false,
-    					"statistics": [
-    						"Average"
-    					]
     				}
     			],
     			"thresholds": [],
@@ -267,37 +236,6 @@ data:
     					"statistics": [
     						"Average"
     					]
-    				},
-    				{
-    					"application": {
-    						"filter": ""
-    					},
-    					"expression": "",
-    					"functions": [],
-    					"group": {
-    						"filter": ""
-    					},
-    					"highResolution": false,
-    					"host": {
-    						"filter": ""
-    					},
-    					"id": "",
-    					"item": {
-    						"filter": ""
-    					},
-    					"matchExact": true,
-    					"metricName": "AWS Namespace Costs $hosted_ns",
-    					"mode": 0,
-    					"namespace": "monitoring",
-    					"options": {
-    						"showDisabledItems": false
-    					},
-    					"period": "",
-    					"refId": "B",
-    					"returnData": false,
-    					"statistics": [
-    						"Average"
-    					]
     				}
     			],
     			"thresholds": [],
@@ -418,37 +356,6 @@ data:
     					},
     					"period": "",
     					"refId": "A",
-    					"returnData": false,
-    					"statistics": [
-    						"Average"
-    					]
-    				},
-    				{
-    					"application": {
-    						"filter": ""
-    					},
-    					"expression": "",
-    					"functions": [],
-    					"group": {
-    						"filter": ""
-    					},
-    					"highResolution": false,
-    					"host": {
-    						"filter": ""
-    					},
-    					"id": "",
-    					"item": {
-    						"filter": ""
-    					},
-    					"matchExact": true,
-    					"metricName": "AWS Namespace Costs All Namespaces",
-    					"mode": 0,
-    					"namespace": "monitoring",
-    					"options": {
-    						"showDisabledItems": false
-    					},
-    					"period": "",
-    					"refId": "B",
     					"returnData": false,
     					"statistics": [
     						"Average"
