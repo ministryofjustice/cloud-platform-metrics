@@ -3,11 +3,11 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: aws-costs-metrics
-  namespace: monitoring
+  namespace: cloud-platform-metrics
   labels:
     grafana_dashboard: ""
 data:
-  dashboard-aws-costs-metrics.json: |
+  dashboard-aws-costs-metrics.json: >
     {
     	"annotations": {
     		"list": [{
@@ -151,130 +151,7 @@ data:
     				"alignLevel": null
     			}
                  },
-                 {
-                         "aliasColors": {},
-    			"bars": false,
-    			"dashLength": 10,
-    			"dashes": false,
-    			"datasource": "Thanos",
-    			"editable": true,
-    			"error": false,
-    			"fieldConfig": {
-    				"defaults": {
-    					"custom": {},
-    					"links": []
-    				},
-    				"overrides": []
-    			},
-    			"fill": 1,
-    			"fillGradient": 0,
-    			"grid": {},
-    			"gridPos": {
-    				"h": 15,
-    				"w": 24,
-    				"x": 0,
-    				"y": 0
-    			},
-    			"hiddenSeries": false,
-    			"id": 1,
-    			"isNew": true,
-    			"legend": {
-    				"alignAsTable": true,
-    				"current": true,
-    				"hideEmpty": false,
-    				"hideZero": false,
-    				"show": true,
-    				"sort": "current",
-    				"sortDesc": true,
-    				"total": false,
-    				"values": true
-    			},
-    			"lines": true,
-    			"linewidth": 2,
-    			"links": [],
-    			"nullPointMode": "connected",
-    			"options": {
-    				"alertThreshold": true
-    			},
-    			"percentage": false,
-    			"pluginVersion": "7.5.9",
-    			"pointradius": 5,
-    			"points": false,
-    			"renderer": "flot",
-    			"seriesOverrides": [],
-    			"spaceLength": 10,
-    			"stack": true,
-    			"steppedLine": true,
-    			"targets": [{
-    					"expr": "sum (cloud_platform_metrics_aws_costs)/count(cloud_platform_metrics_namespace_details)",
-    					"application": {
-    						"filter": ""
-    					},
-    					"expression": "",
-    					"functions": [],
-    					"group": {
-    						"filter": ""
-    					},
-    					"highResolution": false,
-    					"host": {
-    						"filter": ""
-    					},
-    					"id": "",
-    					"item": {
-    						"filter": ""
-    					},
-    					"matchExact": true,
-    					"metricName": "Average AWS Cost Per Namespace",
-    					"mode": 0,
-    					"namespace": "monitoring",
-    					"options": {
-    						"showDisabledItems": false
-    					},
-    					"period": "",
-    					"refId": "A",
-    					"returnData": false,
-    					"statistics": [
-    						"Average"
-    					]
-    				}
-    			],
-    			"thresholds": [],
-    			"timeFrom": null,
-    			"timeRegions": [],
-    			"timeShift": null,
-    			"title": "Average AWS Cost Per Namespace",
-    			"tooltip": {
-    				"msResolution": false,
-    				"shared": true,
-    				"sort": 2,
-    				"value_type": "cumulative"
-    			},
-    			"type": "graph",
-    			"xaxis": {
-    				"buckets": null,
-    				"mode": "time",
-    				"name": null,
-    				"show": true,
-    				"values": []
-    			},
-    			"yaxes": [{
-    					"format": "currencyGBP",
-    					"label": null,
-    					"logBase": 1,
-    					"show": true
-    				},
-    				{
-    					"format": "short",
-    					"label": null,
-    					"logBase": 1,
-    					"show": false
-    				}
-    			],
-    			"yaxis": {
-    				"align": false,
-    				"alignLevel": null
-    			}
-    		},
+
     		{
     			"aliasColors": {},
     			"bars": false,
@@ -367,6 +244,130 @@ data:
     			"timeRegions": [],
     			"timeShift": null,
     			"title": "AWS Namespace Costs $hosted_ns",
+    			"tooltip": {
+    				"msResolution": false,
+    				"shared": true,
+    				"sort": 2,
+    				"value_type": "cumulative"
+    			},
+    			"type": "graph",
+    			"xaxis": {
+    				"buckets": null,
+    				"mode": "time",
+    				"name": null,
+    				"show": true,
+    				"values": []
+    			},
+    			"yaxes": [{
+    					"format": "currencyGBP",
+    					"label": null,
+    					"logBase": 1,
+    					"show": true
+    				},
+    				{
+    					"format": "short",
+    					"label": null,
+    					"logBase": 1,
+    					"show": false
+    				}
+    			],
+    			"yaxis": {
+    				"align": false,
+    				"alignLevel": null
+    			}
+    		},
+                 {
+                         "aliasColors": {},
+    			"bars": false,
+    			"dashLength": 10,
+    			"dashes": false,
+    			"datasource": "Thanos",
+    			"editable": true,
+    			"error": false,
+    			"fieldConfig": {
+    				"defaults": {
+    					"custom": {},
+    					"links": []
+    				},
+    				"overrides": []
+    			},
+    			"fill": 1,
+    			"fillGradient": 0,
+    			"grid": {},
+    			"gridPos": {
+    				"h": 15,
+    				"w": 24,
+    				"x": 0,
+    				"y": 0
+    			},
+    			"hiddenSeries": false,
+    			"id": 1,
+    			"isNew": true,
+    			"legend": {
+    				"alignAsTable": true,
+    				"current": true,
+    				"hideEmpty": false,
+    				"hideZero": false,
+    				"show": true,
+    				"sort": "current",
+    				"sortDesc": true,
+    				"total": false,
+    				"values": true
+    			},
+    			"lines": true,
+    			"linewidth": 2,
+    			"links": [],
+    			"nullPointMode": "connected",
+    			"options": {
+    				"alertThreshold": true
+    			},
+    			"percentage": false,
+    			"pluginVersion": "7.5.9",
+    			"pointradius": 5,
+    			"points": false,
+    			"renderer": "flot",
+    			"seriesOverrides": [],
+    			"spaceLength": 10,
+    			"stack": true,
+    			"steppedLine": true,
+    			"targets": [{
+    					"expr": "sum (cloud_platform_metrics_aws_costs)/count(cloud_platform_metrics_namespace_details)",
+    					"application": {
+    						"filter": ""
+    					},
+    					"expression": "",
+    					"functions": [],
+    					"group": {
+    						"filter": ""
+    					},
+    					"highResolution": false,
+    					"host": {
+    						"filter": ""
+    					},
+    					"id": "",
+    					"item": {
+    						"filter": ""
+    					},
+    					"matchExact": true,
+    					"metricName": "Average AWS Cost Per Namespace",
+    					"mode": 0,
+    					"namespace": "monitoring",
+    					"options": {
+    						"showDisabledItems": false
+    					},
+    					"period": "",
+    					"refId": "A",
+    					"returnData": false,
+    					"statistics": [
+    						"Average"
+    					]
+    				}
+    			],
+    			"thresholds": [],
+    			"timeFrom": null,
+    			"timeRegions": [],
+    			"timeShift": null,
+    			"title": "Average AWS Cost Per Namespace",
     			"tooltip": {
     				"msResolution": false,
     				"shared": true,
@@ -567,7 +568,7 @@ data:
     		}]
     	},
     	"time": {
-    		"from": "now-1h",
+    		"from": "now-7d",
     		"to": "now"
     	},
     	"timepicker": {
