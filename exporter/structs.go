@@ -12,10 +12,10 @@ import (
 )
 
 type Metrics struct {
-	namespace_details           *prometheus.Desc
-	aws_costs                   *prometheus.Desc
-	deployment_details_deployed *prometheus.Desc
-	deployment_details_failed   *prometheus.Desc
+	namespace_details                          *prometheus.Desc
+	aws_costs                                  *prometheus.Desc
+	infrastructure_deployment_details_deployed *prometheus.Desc
+	infrastructure_deployment_details_failed   *prometheus.Desc
 }
 
 type Config struct {

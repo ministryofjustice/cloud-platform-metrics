@@ -26,14 +26,14 @@ func NewExporter(cfg Config, logger log.Logger) *Exporter {
 				[]string{"aws_service", "hosted_ns"},
 				prometheus.Labels{},
 			),
-			deployment_details_deployed: prometheus.NewDesc(
-				prometheus.BuildFQName(Deployment, "", "deployment_details_deployed"),
+			infrastructure_deployment_details_deployed: prometheus.NewDesc(
+				prometheus.BuildFQName(Deployment, "", "infrastructure_deployment_details_deployed"),
 				"Successful deployments from infrastructure",
 				[]string{"deployed"},
 				prometheus.Labels{},
 			),
-			deployment_details_failed: prometheus.NewDesc(
-				prometheus.BuildFQName(Deployment, "", "deployment_details_failed"),
+			infrastructure_deployment_details_failed: prometheus.NewDesc(
+				prometheus.BuildFQName(Deployment, "", "infrastructure_deployment_details_failed"),
 				"Failed deployments from infrastructure",
 				[]string{"failed"},
 				prometheus.Labels{},
@@ -48,8 +48,8 @@ func NewExporter(cfg Config, logger log.Logger) *Exporter {
 func (e *Exporter) Describe(ch chan<- *prometheus.Desc) {
 	ch <- e.Metrics.namespace_details
 	ch <- e.Metrics.aws_costs
-	ch <- e.Metrics.deployment_details_deployed
-	ch <- e.Metrics.deployment_details_failed
+	ch <- e.Metrics.infrastructure_deployment_details_deployed
+	ch <- e.Metrics.infrastructure_deployment_details_failed
 }
 
 // Collect implements the prometheus.Collector interface
@@ -105,13 +105,13 @@ func (e *Exporter) Collect(ch chan<- prometheus.Metric) {
 	}
 	for _, nums := range deployments {
 		ch <- prometheus.MustNewConstMetric(
-			e.Metrics.deployment_details_deployed,
+			e.Metrics.infrastructure_deployment_details_deployed,
 			prometheus.GaugeValue,
 			nums["deployed"],
 			"deployed",
 		)
 		ch <- prometheus.MustNewConstMetric(
-			e.Metrics.deployment_details_failed,
+			e.Metrics.infrastructure_deployment_details_failed,
 			prometheus.GaugeValue,
 			nums["failed"],
 			"failed",
