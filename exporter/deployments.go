@@ -2,7 +2,6 @@ package exporter
 
 import (
 	"context"
-	"encoding/json"
 	"flag"
 	"fmt"
 	"log"
@@ -142,20 +141,4 @@ func getInfraPrsCount(nodes []nodes) (*infraPRs, error) {
 
 	}
 	return infra, nil
-}
-
-// BuildJsonMap takes a map with date key and infraPRs struct as value, and return a json encoded map
-func BuildJsonMap(infraPRs []map[string]float64) ([]byte, error) {
-	// To handle generics in the data type, we need to create a new map,
-	// add the first key string:string and then the second key/value string:map[string]float64.
-	jsonMap := resourceMap{
-		"updated_at":  time.Now().Format("2006-01-2 15:4:5 UTC"),
-		"deployments": infraPRs,
-	}
-
-	jsonStr, err := json.Marshal(jsonMap)
-	if err != nil {
-		return nil, err
-	}
-	return jsonStr, nil
 }
