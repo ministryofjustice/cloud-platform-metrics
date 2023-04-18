@@ -86,13 +86,13 @@ func (e *Exporter) Collect(ch chan<- prometheus.Metric) {
 		return
 	}
 
-	deployments, err := deployment()
+	deployments, err := FetchCDdeployments()
 	if err != nil {
 		level.Error(e.logger).Log("msg", "failed to fetch deployment details", "err", err)
 		return
 	}
 
-	incidentmeantimes, err := incidentmeantime()
+	incidentmeantimes, err := FetchIncidentMTTR()
 	if err != nil {
 		level.Error(e.logger).Log("msg", "failed to fetch incident mean time details", "err", err)
 		return

@@ -15,10 +15,6 @@ import (
 	"golang.org/x/oauth2"
 )
 
-// resourceMap is used to store both string:string and string:map[string]string key
-// the rest of the map consists of a primary key (string) with a value containing a map (float64:float64)
-type resourceMap map[string]interface{}
-
 var (
 	org        = flag.String("org", "ministryofjustice", "GitHub user or organisation.")
 	repository = flag.String("repository", "cloud-platform-infrastructure", "Repository to check the PR of.")
@@ -35,7 +31,7 @@ const (
 	prCount = 100
 )
 
-func deployment() ([]map[string]float64, error) {
+func FetchCDdeployments() ([]map[string]float64, error) {
 	flag.Parse()
 	infraReport := make([]map[string]float64, 0)
 
