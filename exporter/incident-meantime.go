@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/google/go-github/github"
+	mogo "github.com/grokify/mogo/time/timeutil"
 	"github.com/ministryofjustice/cloud-platform-environments/pkg/authenticate"
 )
 
@@ -20,17 +21,6 @@ const (
 	escapePath = "runbooks/source/incident-log.html.md.erb"
 )
 
-// func incidentmeantime() ([]map[string]float64, error) {
-
-// 	infraReport := make([]map[string]float64, 0)
-
-// 	infraPRMap := make(map[string]float64)
-
-// 	infraPRMap["incidents_mean_time_to_repair"] = 225.11
-// 	infraPRMap["incidents_mean_time_to_resolve"] = 225.28
-// 	infraReport = append(infraReport, infraPRMap)
-// 	return infraReport, nil
-// }
 func FetchIncidentMTTR() ([]map[string]float64, error) {
 
 	mttrReport := make([]map[string]float64, 0)
@@ -47,24 +37,29 @@ func FetchIncidentMTTR() ([]map[string]float64, error) {
 	fileContent, _, _, err := client.Repositories.GetContents(context.Background(), owner, repo, escapePath, opt)
 	if err != nil {
 		fmt.Println(err)
-		return
+		return nil, err
 	}
 	if fileContent != nil {
 		// TODO Read the fileContent from github.RepositoryContent
-
-		scanner := bufio.NewScanner(fileContent)
-
+		content, err := fileContent.GetContent()
+		if err != nil {
+			fmt.Println(err)
+			return nil, err
+		}
+		// Read the file line by line
+		scanner := bufio.NewScanner(strings.NewReader(content))
 		scanner.Split(bufio.ScanLines)
 		var lines []string
 		for scanner.Scan() {
 			lines = append(lines, scanner.Text())
 		}
+
 		// Loop through the lines
 		for i, line := range lines {
 			match, err := regexp.MatchString("^## Q[1-4]", line)
 			if err != nil {
 				fmt.Println(err)
-				return
+				return nil, err
 			}
 			if match {
 				// parse the quarter value from the line
@@ -81,28 +76,29 @@ func FetchIncidentMTTR() ([]map[string]float64, error) {
 					mttr_time, err := time.ParseDuration(mttr)
 					if err != nil {
 						fmt.Println(err)
-						return
+						return nil, err
 					}
 					mttr_hours := mttr_time.Hours()
 					mttr_minutes := mttr_time.Minutes()
 					total_minutes := mttr_hours*60 + mttr_minutes
+					fmt.Println("mttrepair", total_minutes)
 
 					mttrMap["incidents_mean_time_to_repair"] = total_minutes
 					// goto the next line
-					mttr := string(lines[i+4])
+					mttr = string(lines[i+4])
 					// Parse the MTTResolve value from the line
 					mttr = mttr[27:]
 					// take the single space between duration
 					mttr = strings.ReplaceAll(mttr, " ", "")
-					mttr_time, err := time.ParseDuration(mttr)
+					mttr_time, err = time.ParseDuration(mttr)
 					if err != nil {
 						fmt.Println(err)
-						return
+						return nil, err
 					}
-					mttr_hours := mttr_time.Hours()
-					mttr_minutes := mttr_time.Minutes()
-					total_minutes := mttr_hours*60 + mttr_minutes
-
+					mttr_hours = mttr_time.Hours()
+					mttr_minutes = mttr_time.Minutes()
+					total_minutes = mttr_hours*60 + mttr_minutes
+					fmt.Println("mttresolve", total_minutes)
 					mttrMap["incidents_mean_time_to_repair"] = total_minutes
 					mttrReport = append(mttrReport, mttrMap)
 
@@ -110,5 +106,5 @@ func FetchIncidentMTTR() ([]map[string]float64, error) {
 			}
 		}
 	}
-	return incidentmeantime()
+	return mttrReport, nil
 }
