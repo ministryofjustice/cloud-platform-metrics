@@ -13,20 +13,25 @@ spec:
         app: cp-metrics-app
     spec:
       containers:
-      - name: cp-metrics-app
-        image: poornimak/cloud-platform-metrics:1.1
-        ports:
-        - containerPort: 8080
-        env:
-        - name: AWS_REGION
-          value: eu-west-2
-        - name: AWS_ACCESS_KEY_ID
-          valueFrom:
-            secretKeyRef:
-              name: cp-metrics-aws-costs
-              key: access_key_id
-        - name: AWS_SECRET_ACCESS_KEY
-          valueFrom:
-            secretKeyRef:
-              name: cp-metrics-aws-costs
-              key: secret_access_key
+        - name: cp-metrics-app
+          image: ministryofjustice/cloud-platform-metrics:1.3
+          ports:
+            - containerPort: 8080
+          env:
+            - name: AWS_REGION
+              value: eu-west-2
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: cp-metrics-aws-costs
+                  key: access_key_id
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: cp-metrics-aws-costs
+                  key: secret_access_key
+            - name: GITHUB_OAUTH_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: cloud-platform-metrics-github-token
+                  key: token
