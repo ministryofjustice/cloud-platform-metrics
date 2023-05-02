@@ -9,9 +9,8 @@ require (
 	github.com/go-kit/log v0.2.1
 	github.com/ministryofjustice/cloud-platform-environments v1.2.0
 	github.com/prometheus/client_golang v1.14.0
-	github.com/prometheus/common v0.39.0
+	github.com/prometheus/common v0.42.0
 	github.com/shurcooL/githubv4 v0.0.0-20230305132112-efb623903184
-	golang.org/x/oauth2 v0.3.0
 	k8s.io/api v0.26.1
 	k8s.io/client-go v0.26.1
 )
@@ -59,6 +58,7 @@ require (
 	github.com/shurcooL/graphql v0.0.0-20220606043923-3cf50f8a0a29 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	golang.org/x/net v0.7.0 // indirect
+	golang.org/x/oauth2 v0.5.0 // indirect
 	golang.org/x/sys v0.5.0 // indirect
 	golang.org/x/term v0.5.0 // indirect
 	golang.org/x/text v0.7.0 // indirect
