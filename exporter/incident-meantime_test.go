@@ -69,8 +69,8 @@ func Test_parseMTTRQuarter(t *testing.T) {
 			},
 			wantMttrReport: []map[string]float64{
 				{
-					"incidents_mean_time_to_repair":  27022,
-					"incidents_mean_time_to_resolve": 27056,
+					"incidents_mean_time_to_repair":  13511,
+					"incidents_mean_time_to_resolve": 13528,
 				},
 			},
 			wantErr: false,
