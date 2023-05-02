@@ -11,7 +11,6 @@ import (
 	"time"
 
 	"github.com/google/go-github/github"
-	mogo "github.com/grokify/mogo/time/timeutil"
 	"github.com/ministryofjustice/cloud-platform-environments/pkg/authenticate"
 )
 
@@ -75,7 +74,8 @@ func parseMTTRQuarter(lines []string) (mttrReport []map[string]float64, err erro
 			// parse the quarter value from the line
 			quarter := line[3:10]
 			// get the current quarter
-			current_quarter := mogo.FormatQuarter(time.Now())
+			//current_quarter := mogo.FormatQuarter(time.Now())
+			current_quarter := "Q1 2023"
 			if quarter == current_quarter {
 				// goto the next line
 				mttr := string(lines[i+1])
@@ -87,9 +87,8 @@ func parseMTTRQuarter(lines []string) (mttrReport []map[string]float64, err erro
 				if err != nil {
 					return nil, fmt.Errorf("failed to the MTT Repair from incident log: %w", err)
 				}
-				mttr_hours := mttr_time.Hours()
 				mttr_minutes := mttr_time.Minutes()
-				total_minutes := mttr_hours*60 + mttr_minutes
+				total_minutes := mttr_minutes
 				mttrMap["incidents_mean_time_to_repair"] = total_minutes
 				// goto the next line
 				mttr = string(lines[i+2])
@@ -101,9 +100,8 @@ func parseMTTRQuarter(lines []string) (mttrReport []map[string]float64, err erro
 				if err != nil {
 					return nil, fmt.Errorf("failed to the MTT Resolve from incident log: %w", err)
 				}
-				mttr_hours = mttr_time.Hours()
 				mttr_minutes = mttr_time.Minutes()
-				total_minutes = mttr_hours*60 + mttr_minutes
+				total_minutes = mttr_minutes
 				mttrMap["incidents_mean_time_to_resolve"] = total_minutes
 				mttrReport = append(mttrReport, mttrMap)
 
