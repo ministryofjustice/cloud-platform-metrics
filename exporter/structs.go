@@ -16,6 +16,8 @@ type Metrics struct {
 	aws_costs                                  *prometheus.Desc
 	infrastructure_deployment_details_deployed *prometheus.Desc
 	infrastructure_deployment_details_failed   *prometheus.Desc
+	incidents_mean_time_to_repair              *prometheus.Desc
+	incidents_mean_time_to_resolve             *prometheus.Desc
 }
 
 type Config struct {

@@ -38,6 +38,18 @@ func NewExporter(cfg Config, logger log.Logger) *Exporter {
 				[]string{"failed"},
 				prometheus.Labels{},
 			),
+			incidents_mean_time_to_repair: prometheus.NewDesc(
+				prometheus.BuildFQName(Deployment, "", "incidents_mean_time_to_repair"),
+				"Incidents Mean Time to Repair",
+				[]string{"incidents_mean_time_to_repair"},
+				prometheus.Labels{},
+			),
+			incidents_mean_time_to_resolve: prometheus.NewDesc(
+				prometheus.BuildFQName(Deployment, "", "incidents_mean_time_to_resolve"),
+				"Incidents Mean Time to Resolve",
+				[]string{"incidents_mean_time_to_resolve"},
+				prometheus.Labels{},
+			),
 		},
 		Config: cfg,
 		logger: logger,
@@ -50,6 +62,8 @@ func (e *Exporter) Describe(ch chan<- *prometheus.Desc) {
 	ch <- e.Metrics.aws_costs
 	ch <- e.Metrics.infrastructure_deployment_details_deployed
 	ch <- e.Metrics.infrastructure_deployment_details_failed
+	ch <- e.Metrics.incidents_mean_time_to_repair
+	ch <- e.Metrics.incidents_mean_time_to_resolve
 }
 
 // Collect implements the prometheus.Collector interface
@@ -72,9 +86,15 @@ func (e *Exporter) Collect(ch chan<- prometheus.Metric) {
 		return
 	}
 
-	deployments, err := deployment()
+	deployments, err := FetchCDdeployments()
 	if err != nil {
-		level.Error(e.logger).Log("msg", "failed to fetch namespace details", "err", err)
+		level.Error(e.logger).Log("msg", "failed to fetch deployment details", "err", err)
+		return
+	}
+
+	incidentmeantimes, err := FetchIncidentMTTR()
+	if err != nil {
+		level.Error(e.logger).Log("msg", "failed to fetch incident mean time details", "err", err)
 		return
 	}
 
@@ -115,6 +135,21 @@ func (e *Exporter) Collect(ch chan<- prometheus.Metric) {
 			prometheus.GaugeValue,
 			nums["failed"],
 			"failed",
+		)
+	}
+
+	for _, inc := range incidentmeantimes {
+		ch <- prometheus.MustNewConstMetric(
+			e.Metrics.incidents_mean_time_to_repair,
+			prometheus.GaugeValue,
+			inc["incidents_mean_time_to_repair"],
+			"Incidents Mean Time to Repair",
+		)
+		ch <- prometheus.MustNewConstMetric(
+			e.Metrics.incidents_mean_time_to_resolve,
+			prometheus.GaugeValue,
+			inc["incidents_mean_time_to_resolve"],
+			"Incidents Mean_Time to Resolve",
 		)
 	}
 }
