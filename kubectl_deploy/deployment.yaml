@@ -33,5 +33,5 @@ spec:
             - name: GITHUB_OAUTH_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: cloud-platform-metrics-github-token
+                  name: cloud-platform-metrics-gh-token
                   key: token
