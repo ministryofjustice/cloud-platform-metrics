@@ -1,126 +1,56 @@
 package main
 
 import (
-	"flag"
-	"fmt"
-	"log"
+	"ministryofjustice/cloud-platform-metrics/exporter"
 	"net/http"
 	"os"
-	"path/filepath"
-	"time"
 
-	"github.com/ministryofjustice/cloud-platform-cli/pkg/client"
-	"github.com/ministryofjustice/cloud-platform-cli/pkg/cluster"
-	"github.com/ministryofjustice/cloud-platform-environments/pkg/namespace"
+	"github.com/go-kit/log/level"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
-	v1 "k8s.io/api/core/v1"
-	"k8s.io/client-go/util/homedir"
+	"github.com/prometheus/common/promlog"
 )
 
 var (
-	kubeconfig  string
-	clusterName string
-	awsRegion   string
-	interval    time.Duration
+	cfg     exporter.Config
+	metrics exporter.Metrics
 )
 
-type metrics struct {
-	namespace_details *prometheus.GaugeVec
-}
+const (
+	metricsPath = "/metrics"
+	port        = ":8080"
+)
 
 func init() {
-	if home := homedir.HomeDir(); home != "" {
-		flag.StringVar(&kubeconfig, "kubeconfig", filepath.Join(home, ".kube", "config"), "(optional) absolute path to the kubeconfig file")
-	} else {
-		flag.StringVar(&kubeconfig, "kubeconfig", os.Getenv("KUBECONFIG"), "absolute path to the kubeconfig file")
-	}
+	cfg = exporter.Init()
 
-	flag.StringVar(&clusterName, "cluster", "cp-0202-1257", "cluster name to Authenticate to")
-	flag.StringVar(&awsRegion, "region", "eu-west-2", "AWS region to Authenticate to")
-	flag.DurationVar(&interval, "interval", 10*time.Second, "How often to poll the cluster and aws for data.")
 }
 
 func main() {
+	promlogConfig := &promlog.Config{}
+	logger := promlog.New(promlogConfig)
 
-	// Create new metrics and register them using the custom registry.
-	m := NewMetrics()
+	level.Info(logger).Log("Starting Cloud Platforme Metrics Exporter")
 
-	go func() {
-		for {
-			namespaces, _ := fetchNamespaceDetails()
-			updateMetrics(namespaces, m)
-			time.Sleep(1 * time.Minute)
-		}
-	}()
+	exp := exporter.NewExporter(cfg, logger)
 
-	serveMetrics(":8080", "/metrics")
+	prometheus.MustRegister(exp)
 
-}
+	level.Info(logger).Log("serveMetrics: addr=%s path=%s", port, metricsPath)
+	http.Handle(metricsPath, promhttp.HandlerFor(prometheus.DefaultGatherer, promhttp.HandlerOpts{}))
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(`<html>
+             <head><title>Cloud Platform Metrics Exporter</title></head>
+             <body>
+             <h1>Cloud Platform Metrics Exporter</h1>
+             <p><a href='` + metricsPath + `'>Metrics</a></p>
+             </body>
+             </html>`))
+	})
 
-func NewMetrics() *metrics {
-
-	m := &metrics{
-		namespace_details: prometheus.NewGaugeVec(prometheus.GaugeOpts{
-			Name: "namespace_details",
-			Help: "Namespace details from cluster",
-		},
-			[]string{"namespace", "application", "business_unit", "is_production"},
-		),
+	if err := http.ListenAndServe(port, nil); err != nil {
+		level.Error(logger).Log("msg", "failed to serve metrics", "err", err)
+		os.Exit(1)
 	}
 
-	prometheus.MustRegister(m.namespace_details)
-
-	return m
-}
-
-func serveMetrics(addr, path string) {
-	log.Printf("serveMetrics: addr=%s path=%s", addr, path)
-	http.Handle(path, promhttp.HandlerFor(prometheus.DefaultGatherer, promhttp.HandlerOpts{}))
-	log.Fatal(http.ListenAndServe(addr, nil))
-}
-
-// Store the namespaces in the clusterMetrics struct
-func updateMetrics(namespaces []v1.Namespace, m *metrics) {
-
-	// get required details of each namespace and store it in namespace map
-	for _, ns := range namespaces {
-		log.Printf("namespace: %s", ns.Name)
-		m.namespace_details.With(
-			prometheus.Labels{
-				"namespace":     ns.Name,
-				"application":   ns.Annotations["cloud-platform.justice.gov.uk/application"],
-				"business_unit": ns.Annotations["cloud-platform.justice.gov.uk/business-unit"],
-				"is_production": ns.Labels["cloud-platform.justice.gov.uk/is-production"],
-			}).Set(1)
-	}
-}
-
-func fetchNamespaceDetails() ([]v1.Namespace, error) {
-
-	creds, err := getCredentials(awsRegion)
-	if err != nil {
-		return nil, fmt.Errorf("failed to auth to cluster: %w", err)
-	}
-
-	clientset, err := cluster.AuthToCluster(clusterName, creds.Eks, kubeconfig, creds.Profile)
-	if err != nil {
-		return nil, fmt.Errorf("failed to auth to cluster: %w", err)
-	}
-
-	// Get the list of namespaces from the cluster which is set in the clientset
-	namespaces, err := namespace.GetAllNamespacesFromCluster(clientset)
-	if err != nil {
-		return nil, fmt.Errorf("failed to GetAllNamespacesFromCluster from cluster: %w", err)
-	}
-	return namespaces, nil
-}
-
-func getCredentials(awsRegion string) (*client.AwsCredentials, error) {
-	creds, err := client.NewAwsCreds(awsRegion)
-	if err != nil {
-		return nil, err
-	}
-
-	return creds, nil
 }

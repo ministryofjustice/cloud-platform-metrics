@@ -1,0 +1,13 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: cp-metrics-app-service
+spec:
+  selector:
+    matchLabels:
+      app: cp-metrics-app
+  endpoints:
+    - interval: 240s
+      port: http
+      scrapeTimeout: 180s
+      path: metrics
