@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: cp-metrics-app
-          image: ministryofjustice/cloud-platform-metrics:1.5
+          image: ${REGISTRY}/${REPOSITORY}:${IMAGE_TAG}
           ports:
             - containerPort: 8080
           env:

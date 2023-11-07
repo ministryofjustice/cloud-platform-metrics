@@ -3,7 +3,7 @@ kind: Ingress
 metadata:
   name: cp-metrics-app
   annotations:
-    external-dns.alpha.kubernetes.io/set-identifier: cp-metrics-app-cloud-platform-metrics-green
+    external-dns.alpha.kubernetes.io/set-identifier: cp-metrics-app-${NAMESPACE}-green
     external-dns.alpha.kubernetes.io/aws-weight: "100"
 spec:
   tls:
