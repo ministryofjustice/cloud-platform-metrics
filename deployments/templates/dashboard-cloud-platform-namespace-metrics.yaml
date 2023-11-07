@@ -2,12 +2,12 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: cloud-platforms-performance-metrics
-  namespace: cloud-platform-metrics
+  name: cloud-platforms-namespace-metrics
+  namespace: ${NAMESPACE}
   labels:
-    grafana_dashboard: ""
+    grafana_dashboard: "cloud-platform-metrics"
 data:
-  dashboard-cloud-platforms-performance-metrics.json: |
+  dashboard-cloud-platforms-namespace-metrics.json: |
     {
     	"annotations": {
     		"list": [{
@@ -20,7 +20,7 @@ data:
     			"type": "dashboard"
     		}]
     	},
-    	"description": "Visualize the cloud-platform's performance metrics",
+    	"description": "Visualize estimated AWS costs per Namespace/Service",
     	"editable": false,
     	"gnetId": 139,
     	"graphTooltip": 0,
@@ -79,45 +79,46 @@ data:
     			"renderer": "flot",
     			"seriesOverrides": [],
     			"spaceLength": 10,
-    			"stack": true,
+    			"stack": false,
     			"steppedLine": true,
     			"targets": [{
-    				"expr": "cloud_platform_metrics_incidents_mean_time_to_repair",
-    				"application": {
-    					"filter": ""
-    				},
-    				"expression": "",
-    				"functions": [],
-    				"group": {
-    					"filter": ""
-    				},
-    				"highResolution": false,
-    				"host": {
-    					"filter": ""
-    				},
-    				"id": "",
-    				"item": {
-    					"filter": ""
-    				},
-    				"matchExact": true,
-    				"metricName": "1. Cloud Platform's Incidents Mean Time To Repair (Minutes)",
-    				"mode": 0,
-    				"namespace": "monitoring",
-    				"options": {
-    					"showDisabledItems": false
-    				},
-    				"period": "",
-    				"refId": "A",
-    				"returnData": false,
-    				"statistics": [
-    					"Average"
-    				]
-    			}],
+    					"expr": "count(cloud_platform_metrics_namespace_details{is_production='true'})",
+    					"application": {
+    						"filter": ""
+    					},
+    					"expression": "",
+    					"functions": [],
+    					"group": {
+    						"filter": ""
+    					},
+    					"highResolution": false,
+    					"host": {
+    						"filter": ""
+    					},
+    					"id": "",
+    					"item": {
+    						"filter": ""
+    					},
+    					"matchExact": true,
+    					"metricName": "1. Cloud Platform Total number of production Namespaces",
+    					"mode": 0,
+    					"namespace": "monitoring",
+    					"options": {
+    						"showDisabledItems": false
+    					},
+    					"period": "",
+    					"refId": "A",
+    					"returnData": false,
+    					"statistics": [
+    						"Average"
+    					]
+    				}
+    			],
     			"thresholds": [],
     			"timeFrom": null,
     			"timeRegions": [],
     			"timeShift": null,
-    			"title": "1. Cloud Platform's Incidents Mean Time To Repair (Minutes)",
+    			"title": "1. Cloud Platform Total number of production Namespaces",
     			"tooltip": {
     				"msResolution": false,
     				"shared": true,
@@ -142,10 +143,10 @@ data:
     					"label": null,
     					"logBase": 1,
     					"show": false
-    				}
+                                }
     			],
     			"yaxis": {
-    				"decimals": 0,
+                                "decimals": 0, 
     				"align": false,
     				"alignLevel": null
     			}
@@ -202,45 +203,46 @@ data:
     			"renderer": "flot",
     			"seriesOverrides": [],
     			"spaceLength": 10,
-    			"stack": true,
+    			"stack": false,
     			"steppedLine": true,
     			"targets": [{
-    				"expr": "cloud_platform_metrics_incidents_mean_time_to_resolve",
-    				"application": {
-    					"filter": ""
-    				},
-    				"expression": "",
-    				"functions": [],
-    				"group": {
-    					"filter": ""
-    				},
-    				"highResolution": false,
-    				"host": {
-    					"filter": ""
-    				},
-    				"id": "",
-    				"item": {
-    					"filter": ""
-    				},
-    				"matchExact": true,
-    				"metricName": "2. Cloud Platform's Incidents Mean Time To Resolve (Minutes)",
-    				"mode": 0,
-    				"namespace": "monitoring",
-    				"options": {
-    					"showDisabledItems": false
-    				},
-    				"period": "",
-    				"refId": "A",
-    				"returnData": false,
-    				"statistics": [
-    					"Average"
-    				]
-    			}],
+    					"expr": "count(cloud_platform_metrics_namespace_details{is_production='false'})",
+    					"application": {
+    						"filter": ""
+    					},
+    					"expression": "",
+    					"functions": [],
+    					"group": {
+    						"filter": ""
+    					},
+    					"highResolution": false,
+    					"host": {
+    						"filter": ""
+    					},
+    					"id": "",
+    					"item": {
+    						"filter": ""
+    					},
+    					"matchExact": true,
+    					"metricName": "2. Cloud platform Total number of non-production Namespaces",
+    					"mode": 0,
+    					"namespace": "monitoring",
+    					"options": {
+    						"showDisabledItems": false
+    					},
+    					"period": "",
+    					"refId": "A",
+    					"returnData": false,
+    					"statistics": [
+    						"Average"
+    					]
+    				}
+    			],
     			"thresholds": [],
     			"timeFrom": null,
     			"timeRegions": [],
     			"timeShift": null,
-    			"title": "2. Cloud Platform's Incidents Mean Time To Resolve (Minutes)",
+    			"title": "2. Cloud Platform Total number of non-production Namespaces",
     			"tooltip": {
     				"msResolution": false,
     				"shared": true,
@@ -268,7 +270,7 @@ data:
     				}
     			],
     			"yaxis": {
-    				"decimals": 0,
+                                "decimals": 0,
     				"align": false,
     				"alignLevel": null
     			}
@@ -292,13 +294,13 @@ data:
     			"fillGradient": 0,
     			"grid": {},
     			"gridPos": {
-    				"h": 15,
+    				"h": 10,
     				"w": 24,
     				"x": 0,
-    				"y": 0
+    				"y": 15
     			},
     			"hiddenSeries": false,
-    			"id": 1,
+    			"id": 3,
     			"isNew": true,
     			"legend": {
     				"alignAsTable": true,
@@ -325,45 +327,46 @@ data:
     			"renderer": "flot",
     			"seriesOverrides": [],
     			"spaceLength": 10,
-    			"stack": true,
+    			"stack": false,
     			"steppedLine": true,
     			"targets": [{
-    				"expr": "sum (cloud_platform_metrics_infrastructure_deployment_details_deployed)",
-    				"application": {
-    					"filter": ""
-    				},
-    				"expression": "",
-    				"functions": [],
-    				"group": {
-    					"filter": ""
-    				},
-    				"highResolution": false,
-    				"host": {
-    					"filter": ""
-    				},
-    				"id": "",
-    				"item": {
-    					"filter": ""
-    				},
-    				"matchExact": true,
-    				"metricName": "3. Cloud Platform's Successful Infrastructure deployments",
-    				"mode": 0,
-    				"namespace": "monitoring",
-    				"options": {
-    					"showDisabledItems": false
-    				},
-    				"period": "",
-    				"refId": "A",
-    				"returnData": false,
-    				"statistics": [
-    					"Average"
-    				]
-    			}],
+    					"expr": "count(cloud_platform_metrics_namespace_details)",
+    					"application": {
+    						"filter": ""
+    					},
+    					"expression": "",
+    					"functions": [],
+    					"group": {
+    						"filter": ""
+    					},
+    					"highResolution": false,
+    					"host": {
+    						"filter": ""
+    					},
+    					"id": "",
+    					"item": {
+    						"filter": ""
+    					},
+    					"matchExact": true,
+    					"metricName": "3. Cloud Platform Total number of all Namespaces",
+    					"mode": 0,
+    					"namespace": "monitoring",
+    					"options": {
+    						"showDisabledItems": false
+    					},
+    					"period": "",
+    					"refId": "A",
+    					"returnData": false,
+    					"statistics": [
+    						"Average"
+    					]
+    				}
+    			],
     			"thresholds": [],
     			"timeFrom": null,
     			"timeRegions": [],
     			"timeShift": null,
-    			"title": "3. Cloud Platform's Successful Infrastructure deployments",
+    			"title": "3. Cloud Platform Total number of all Namespaces",
     			"tooltip": {
     				"msResolution": false,
     				"shared": true,
@@ -391,7 +394,7 @@ data:
     				}
     			],
     			"yaxis": {
-    				"decimals": 0,
+                                "decimals": 0,
     				"align": false,
     				"alignLevel": null
     			}
@@ -415,13 +418,13 @@ data:
     			"fillGradient": 0,
     			"grid": {},
     			"gridPos": {
-    				"h": 15,
+    				"h": 10,
     				"w": 24,
     				"x": 0,
-    				"y": 0
+    				"y": 15
     			},
     			"hiddenSeries": false,
-    			"id": 1,
+    			"id": 3,
     			"isNew": true,
     			"legend": {
     				"alignAsTable": true,
@@ -448,45 +451,46 @@ data:
     			"renderer": "flot",
     			"seriesOverrides": [],
     			"spaceLength": 10,
-    			"stack": true,
+    			"stack": false,
     			"steppedLine": true,
     			"targets": [{
-    				"expr": "sum (cloud_platform_metrics_infrastructure_deployment_details_failed)",
-    				"application": {
-    					"filter": ""
-    				},
-    				"expression": "",
-    				"functions": [],
-    				"group": {
-    					"filter": ""
-    				},
-    				"highResolution": false,
-    				"host": {
-    					"filter": ""
-    				},
-    				"id": "",
-    				"item": {
-    					"filter": ""
-    				},
-    				"matchExact": true,
-    				"metricName": "4. Cloud Platform's Failed Infrastructure deployments",
-    				"mode": 0,
-    				"namespace": "monitoring",
-    				"options": {
-    					"showDisabledItems": false
-    				},
-    				"period": "",
-    				"refId": "A",
-    				"returnData": false,
-    				"statistics": [
-    					"Average"
-    				]
-    			}],
+    					"expr": "count(count(cloud_platform_metrics_namespace_details{application=~'.*'}) by (application))",
+    					"application": {
+    						"filter": ""
+    					},
+    					"expression": "",
+    					"functions": [],
+    					"group": {
+    						"filter": ""
+    					},
+    					"highResolution": false,
+    					"host": {
+    						"filter": ""
+    					},
+    					"id": "",
+    					"item": {
+    						"filter": ""
+    					},
+    					"matchExact": true,
+    					"metricName": "4. Cloud Platform Unique Applications",
+    					"mode": 0,
+    					"namespace": "monitoring",
+    					"options": {
+    						"showDisabledItems": false
+    					},
+    					"period": "",
+    					"refId": "A",
+    					"returnData": false,
+    					"statistics": [
+    						"Average"
+    					]
+    				}
+    			],
     			"thresholds": [],
     			"timeFrom": null,
     			"timeRegions": [],
     			"timeShift": null,
-    			"title": "4. Cloud Platform's Failed Infrastructure Deployments",
+    			"title": "4. Cloud Platform Unique Applications",
     			"tooltip": {
     				"msResolution": false,
     				"shared": true,
@@ -502,11 +506,13 @@ data:
     				"values": []
     			},
     			"yaxes": [{
+    					"$$hashKey": "object:75",
     					"label": null,
     					"logBase": 1,
     					"show": true
     				},
     				{
+    					"$$hashKey": "object:76",
     					"format": "short",
     					"label": null,
     					"logBase": 1,
@@ -514,12 +520,137 @@ data:
     				}
     			],
     			"yaxis": {
-    				"decimals": 0,
+                                "decimals": 0,
+    				"align": false,
+    				"alignLevel": null
+    			}
+    		},
+    		{
+    			"aliasColors": {},
+    			"bars": false,
+    			"dashLength": 10,
+    			"dashes": false,
+    			"datasource": "Thanos",
+    			"editable": true,
+    			"error": false,
+    			"fieldConfig": {
+    				"defaults": {
+    					"custom": {},
+    					"links": []
+    				},
+    				"overrides": []
+    			},
+    			"fill": 1,
+    			"fillGradient": 0,
+    			"grid": {},
+    			"gridPos": {
+    				"h": 10,
+    				"w": 24,
+    				"x": 0,
+    				"y": 15
+    			},
+    			"hiddenSeries": false,
+    			"id": 3,
+    			"isNew": true,
+    			"legend": {
+    				"alignAsTable": true,
+    				"current": true,
+    				"hideEmpty": false,
+    				"hideZero": false,
+    				"show": true,
+    				"sort": "current",
+    				"sortDesc": true,
+    				"total": false,
+    				"values": true
+    			},
+    			"lines": true,
+    			"linewidth": 2,
+    			"links": [],
+    			"nullPointMode": "connected",
+    			"options": {
+    				"alertThreshold": true
+    			},
+    			"percentage": false,
+    			"pluginVersion": "7.5.9",
+    			"pointradius": 5,
+    			"points": false,
+    			"renderer": "flot",
+    			"seriesOverrides": [],
+    			"spaceLength": 10,
+    			"stack": false,
+    			"steppedLine": true,
+    			"targets": [{
+    					"expr": "count(count(cloud_platform_metrics_namespace_details{is_production='true', application=~'.*'}) by (application))",
+    					"application": {
+    						"filter": ""
+    					},
+    					"expression": "",
+    					"functions": [],
+    					"group": {
+    						"filter": ""
+    					},
+    					"highResolution": false,
+    					"host": {
+    						"filter": ""
+    					},
+    					"id": "",
+    					"item": {
+    						"filter": ""
+    					},
+    					"matchExact": true,
+    					"metricName": "5. Cloud Platform Unique Applications (Production)",
+    					"mode": 0,
+    					"namespace": "monitoring",
+    					"options": {
+    						"showDisabledItems": false
+    					},
+    					"period": "",
+    					"refId": "A",
+    					"returnData": false,
+    					"statistics": [
+    						"Average"
+    					]
+    				}
+    			],
+    			"thresholds": [],
+    			"timeFrom": null,
+    			"timeRegions": [],
+    			"timeShift": null,
+    			"title": "5. Cloud Platform Unique Applications (Production)",
+    			"tooltip": {
+    				"msResolution": false,
+    				"shared": true,
+    				"sort": 2,
+    				"value_type": "cumulative"
+    			},
+    			"type": "graph",
+    			"xaxis": {
+    				"buckets": null,
+    				"mode": "time",
+    				"name": null,
+    				"show": true,
+    				"values": []
+    			},
+    			"yaxes": [{
+    					"$$hashKey": "object:75",
+    					"label": null,
+    					"logBase": 1,
+    					"show": true
+    				},
+    				{
+    					"$$hashKey": "object:76",
+    					"format": "short",
+    					"label": null,
+    					"logBase": 1,
+    					"show": false
+    				}
+    			],
+    			"yaxis": {
+                                "decimals": 0,
     				"align": false,
     				"alignLevel": null
     			}
     		}
-
     	],
     	"refresh": false,
     	"schemaVersion": 27,
@@ -528,7 +659,6 @@ data:
     		"metrics",
     		"monitoring"
     	],
-
     	"time": {
     		"from": "now-7d",
     		"to": "now"
@@ -559,7 +689,7 @@ data:
     		]
     	},
     	"timezone": "browser",
-    	"title": "cloud_platforms_performance_metrics",
-    	"uid": "cloud_platforms_performance_metrics",
+    	"title": "cloud_platforms_namespace_metrics",
+    	"uid": "cloud_platforms_namespace_metrics",
     	"version": 1
     }

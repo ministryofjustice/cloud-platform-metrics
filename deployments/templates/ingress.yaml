@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: cp-metrics-app
+  namespace: ${NAMESPACE}
+  annotations:
+    external-dns.alpha.kubernetes.io/set-identifier: cp-metrics-app-${NAMESPACE}-green
+    external-dns.alpha.kubernetes.io/aws-weight: "100"
+spec:
+  tls:
+    - hosts:
+        - cloud-platform-metrics.apps.live.cloud-platform.service.justice.gov.uk
+  rules:
+    - host: cloud-platform-metrics.apps.live.cloud-platform.service.justice.gov.uk
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: cp-metrics-app
+                port:
+                  number: 8080

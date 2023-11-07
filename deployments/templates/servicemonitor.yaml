@@ -2,6 +2,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: cp-metrics-app-service
+  namespace: ${NAMESPACE}
 spec:
   selector:
     matchLabels:
