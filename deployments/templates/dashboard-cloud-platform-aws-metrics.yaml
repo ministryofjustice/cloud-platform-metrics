@@ -2,12 +2,12 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: cloud-platforms-namespace-metrics
-  namespace: cloud-platform-metrics
+  name: cloud-platforms-aws-costs-metrics
+  namespace: ${NAMESPACE}
   labels:
-    grafana_dashboard: "cloud-platform-metrics"
+    grafana_dashboard: ""
 data:
-  dashboard-cloud-platforms-namespace-metrics.json: |
+  dashboard-cloud-platforms-aws-costs-metrics.json: |
     {
     	"annotations": {
     		"list": [{
@@ -79,10 +79,10 @@ data:
     			"renderer": "flot",
     			"seriesOverrides": [],
     			"spaceLength": 10,
-    			"stack": false,
+    			"stack": true,
     			"steppedLine": true,
     			"targets": [{
-    					"expr": "count(cloud_platform_metrics_namespace_details{is_production='true'})",
+    					"expr": "cloud_platform_metrics_aws_costs{hosted_ns='$hosted_ns'}",
     					"application": {
     						"filter": ""
     					},
@@ -100,7 +100,7 @@ data:
     						"filter": ""
     					},
     					"matchExact": true,
-    					"metricName": "1. Cloud Platform Total number of production Namespaces",
+    					"metricName": "1. Cloud Platform's AWS Service Costs $hosted_ns",
     					"mode": 0,
     					"namespace": "monitoring",
     					"options": {
@@ -118,7 +118,7 @@ data:
     			"timeFrom": null,
     			"timeRegions": [],
     			"timeShift": null,
-    			"title": "1. Cloud Platform Total number of production Namespaces",
+    			"title": "1. Cloud Platform's AWS Service Costs $hosted_ns",
     			"tooltip": {
     				"msResolution": false,
     				"shared": true,
@@ -134,6 +134,7 @@ data:
     				"values": []
     			},
     			"yaxes": [{
+    					"format": "currencyGBP",
     					"label": null,
     					"logBase": 1,
     					"show": true
@@ -143,14 +144,13 @@ data:
     					"label": null,
     					"logBase": 1,
     					"show": false
-                                }
+    				}
     			],
     			"yaxis": {
-                                "decimals": 0, 
     				"align": false,
     				"alignLevel": null
     			}
-    		},
+                 },
     		{
     			"aliasColors": {},
     			"bars": false,
@@ -203,10 +203,10 @@ data:
     			"renderer": "flot",
     			"seriesOverrides": [],
     			"spaceLength": 10,
-    			"stack": false,
+    			"stack": true,
     			"steppedLine": true,
     			"targets": [{
-    					"expr": "count(cloud_platform_metrics_namespace_details{is_production='false'})",
+    					"expr": "sum (cloud_platform_metrics_aws_costs{hosted_ns='$hosted_ns'})",
     					"application": {
     						"filter": ""
     					},
@@ -224,7 +224,7 @@ data:
     						"filter": ""
     					},
     					"matchExact": true,
-    					"metricName": "2. Cloud platform Total number of non-production Namespaces",
+    					"metricName": "2. Cloud Platform's AWS Namespace Costs $hosted_ns",
     					"mode": 0,
     					"namespace": "monitoring",
     					"options": {
@@ -242,7 +242,7 @@ data:
     			"timeFrom": null,
     			"timeRegions": [],
     			"timeShift": null,
-    			"title": "2. Cloud Platform Total number of non-production Namespaces",
+    			"title": "2. Cloud Platform's AWS Namespace Costs $hosted_ns",
     			"tooltip": {
     				"msResolution": false,
     				"shared": true,
@@ -258,6 +258,7 @@ data:
     				"values": []
     			},
     			"yaxes": [{
+    					"format": "currencyGBP",
     					"label": null,
     					"logBase": 1,
     					"show": true
@@ -270,7 +271,130 @@ data:
     				}
     			],
     			"yaxis": {
-                                "decimals": 0,
+    				"align": false,
+    				"alignLevel": null
+    			}
+    		},
+                 {
+                         "aliasColors": {},
+    			"bars": false,
+    			"dashLength": 10,
+    			"dashes": false,
+    			"datasource": "Thanos",
+    			"editable": true,
+    			"error": false,
+    			"fieldConfig": {
+    				"defaults": {
+    					"custom": {},
+    					"links": []
+    				},
+    				"overrides": []
+    			},
+    			"fill": 1,
+    			"fillGradient": 0,
+    			"grid": {},
+    			"gridPos": {
+    				"h": 15,
+    				"w": 24,
+    				"x": 0,
+    				"y": 0
+    			},
+    			"hiddenSeries": false,
+    			"id": 1,
+    			"isNew": true,
+    			"legend": {
+    				"alignAsTable": true,
+    				"current": true,
+    				"hideEmpty": false,
+    				"hideZero": false,
+    				"show": true,
+    				"sort": "current",
+    				"sortDesc": true,
+    				"total": false,
+    				"values": true
+    			},
+    			"lines": true,
+    			"linewidth": 2,
+    			"links": [],
+    			"nullPointMode": "connected",
+    			"options": {
+    				"alertThreshold": true
+    			},
+    			"percentage": false,
+    			"pluginVersion": "7.5.9",
+    			"pointradius": 5,
+    			"points": false,
+    			"renderer": "flot",
+    			"seriesOverrides": [],
+    			"spaceLength": 10,
+    			"stack": true,
+    			"steppedLine": true,
+    			"targets": [{
+    					"expr": "sum (cloud_platform_metrics_aws_costs)/count(cloud_platform_metrics_namespace_details)",
+    					"application": {
+    						"filter": ""
+    					},
+    					"expression": "",
+    					"functions": [],
+    					"group": {
+    						"filter": ""
+    					},
+    					"highResolution": false,
+    					"host": {
+    						"filter": ""
+    					},
+    					"id": "",
+    					"item": {
+    						"filter": ""
+    					},
+    					"matchExact": true,
+    					"metricName": "3. Cloud Platform's Average AWS Cost Per Namespace",
+    					"mode": 0,
+    					"namespace": "monitoring",
+    					"options": {
+    						"showDisabledItems": false
+    					},
+    					"period": "",
+    					"refId": "A",
+    					"returnData": false,
+    					"statistics": [
+    						"Average"
+    					]
+    				}
+    			],
+    			"thresholds": [],
+    			"timeFrom": null,
+    			"timeRegions": [],
+    			"timeShift": null,
+    			"title": "3. Cloud Platform's Average AWS Cost Per Namespace",
+    			"tooltip": {
+    				"msResolution": false,
+    				"shared": true,
+    				"sort": 2,
+    				"value_type": "cumulative"
+    			},
+    			"type": "graph",
+    			"xaxis": {
+    				"buckets": null,
+    				"mode": "time",
+    				"name": null,
+    				"show": true,
+    				"values": []
+    			},
+    			"yaxes": [{
+    					"format": "currencyGBP",
+    					"label": null,
+    					"logBase": 1,
+    					"show": true
+    				},
+    				{
+    					"format": "short",
+    					"label": null,
+    					"logBase": 1,
+    					"show": false
+    				}
+    			],
+    			"yaxis": {
     				"align": false,
     				"alignLevel": null
     			}
@@ -327,10 +451,10 @@ data:
     			"renderer": "flot",
     			"seriesOverrides": [],
     			"spaceLength": 10,
-    			"stack": false,
+    			"stack": true,
     			"steppedLine": true,
     			"targets": [{
-    					"expr": "count(cloud_platform_metrics_namespace_details)",
+    					"expr": "sum (cloud_platform_metrics_aws_costs)",
     					"application": {
     						"filter": ""
     					},
@@ -348,7 +472,7 @@ data:
     						"filter": ""
     					},
     					"matchExact": true,
-    					"metricName": "3. Cloud Platform Total number of all Namespaces",
+    					"metricName": "4. Cloud Platform's AWS Namespace Costs All Namespaces",
     					"mode": 0,
     					"namespace": "monitoring",
     					"options": {
@@ -366,131 +490,7 @@ data:
     			"timeFrom": null,
     			"timeRegions": [],
     			"timeShift": null,
-    			"title": "3. Cloud Platform Total number of all Namespaces",
-    			"tooltip": {
-    				"msResolution": false,
-    				"shared": true,
-    				"sort": 2,
-    				"value_type": "cumulative"
-    			},
-    			"type": "graph",
-    			"xaxis": {
-    				"buckets": null,
-    				"mode": "time",
-    				"name": null,
-    				"show": true,
-    				"values": []
-    			},
-    			"yaxes": [{
-    					"label": null,
-    					"logBase": 1,
-    					"show": true
-    				},
-    				{
-    					"format": "short",
-    					"label": null,
-    					"logBase": 1,
-    					"show": false
-    				}
-    			],
-    			"yaxis": {
-                                "decimals": 0,
-    				"align": false,
-    				"alignLevel": null
-    			}
-    		},
-    		{
-    			"aliasColors": {},
-    			"bars": false,
-    			"dashLength": 10,
-    			"dashes": false,
-    			"datasource": "Thanos",
-    			"editable": true,
-    			"error": false,
-    			"fieldConfig": {
-    				"defaults": {
-    					"custom": {},
-    					"links": []
-    				},
-    				"overrides": []
-    			},
-    			"fill": 1,
-    			"fillGradient": 0,
-    			"grid": {},
-    			"gridPos": {
-    				"h": 10,
-    				"w": 24,
-    				"x": 0,
-    				"y": 15
-    			},
-    			"hiddenSeries": false,
-    			"id": 3,
-    			"isNew": true,
-    			"legend": {
-    				"alignAsTable": true,
-    				"current": true,
-    				"hideEmpty": false,
-    				"hideZero": false,
-    				"show": true,
-    				"sort": "current",
-    				"sortDesc": true,
-    				"total": false,
-    				"values": true
-    			},
-    			"lines": true,
-    			"linewidth": 2,
-    			"links": [],
-    			"nullPointMode": "connected",
-    			"options": {
-    				"alertThreshold": true
-    			},
-    			"percentage": false,
-    			"pluginVersion": "7.5.9",
-    			"pointradius": 5,
-    			"points": false,
-    			"renderer": "flot",
-    			"seriesOverrides": [],
-    			"spaceLength": 10,
-    			"stack": false,
-    			"steppedLine": true,
-    			"targets": [{
-    					"expr": "count(count(cloud_platform_metrics_namespace_details{application=~'.*'}) by (application))",
-    					"application": {
-    						"filter": ""
-    					},
-    					"expression": "",
-    					"functions": [],
-    					"group": {
-    						"filter": ""
-    					},
-    					"highResolution": false,
-    					"host": {
-    						"filter": ""
-    					},
-    					"id": "",
-    					"item": {
-    						"filter": ""
-    					},
-    					"matchExact": true,
-    					"metricName": "4. Cloud Platform Unique Applications",
-    					"mode": 0,
-    					"namespace": "monitoring",
-    					"options": {
-    						"showDisabledItems": false
-    					},
-    					"period": "",
-    					"refId": "A",
-    					"returnData": false,
-    					"statistics": [
-    						"Average"
-    					]
-    				}
-    			],
-    			"thresholds": [],
-    			"timeFrom": null,
-    			"timeRegions": [],
-    			"timeShift": null,
-    			"title": "4. Cloud Platform Unique Applications",
+    			"title": "4. Cloud Platform's AWS Namespace Costs All Namespaces",
     			"tooltip": {
     				"msResolution": false,
     				"shared": true,
@@ -507,6 +507,7 @@ data:
     			},
     			"yaxes": [{
     					"$$hashKey": "object:75",
+    					"format": "currencyGBP",
     					"label": null,
     					"logBase": 1,
     					"show": true
@@ -520,7 +521,6 @@ data:
     				}
     			],
     			"yaxis": {
-                                "decimals": 0,
     				"align": false,
     				"alignLevel": null
     			}
@@ -533,6 +533,39 @@ data:
     		"metrics",
     		"monitoring"
     	],
+    	"templating": {
+    		"list": [{
+    			"allValue": null,
+    			"current": {
+    				"selected": true,
+    				"text": "manage-recalls-prod",
+    				"value": "manage-recalls-prod"
+    			},
+    			"datasource": "Thanos",
+    			"definition": "label_values(cloud_platform_metrics_aws_costs{}, hosted_ns)",
+    			"description": null,
+    			"error": null,
+    			"hide": 0,
+    			"includeAll": false,
+    			"label": null,
+    			"multi": false,
+    			"name": "hosted_ns",
+    			"options": [],
+    			"query": {
+    				"query": "label_values(cloud_platform_metrics_aws_costs{}, hosted_ns)",
+    				"refId": "StandardVariableQuery"
+    			},
+    			"refresh": 1,
+    			"regex": "",
+    			"skipUrlSync": false,
+    			"sort": 1,
+    			"tagValuesQuery": "",
+    			"tags": [],
+    			"tagsQuery": "",
+    			"type": "query",
+    			"useTags": false
+    		}]
+    	},
     	"time": {
     		"from": "now-7d",
     		"to": "now"
@@ -563,7 +596,7 @@ data:
     		]
     	},
     	"timezone": "browser",
-    	"title": "cloud_platforms_namespace_metrics",
-    	"uid": "cloud_platforms_namespace_metrics",
+    	"title": "cloud_platforms_aws_costs_metrics",
+    	"uid": "cloud_platforms_aws_costs_metrics",
     	"version": 1
     }
