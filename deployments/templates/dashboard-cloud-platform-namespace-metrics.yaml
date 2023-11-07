@@ -3,7 +3,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: cloud-platforms-namespace-metrics
-  namespace: ${NAMESPACE}
+  namespace: { NAMESPACE }
   labels:
     grafana_dashboard: "cloud-platform-metrics"
 data:
@@ -20,7 +20,7 @@ data:
     			"type": "dashboard"
     		}]
     	},
-    	"description": "Visualize estimated AWS costs per Namespace/Service",
+    	"description": "Visualize Namespace metrics for Cloud Platform",
     	"editable": false,
     	"gnetId": 139,
     	"graphTooltip": 0,
