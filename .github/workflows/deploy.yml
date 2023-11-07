@@ -26,13 +26,13 @@ jobs:
           REPOSITORY: ${{ vars.ECR_REPOSITORY }}
           IMAGE_TAG: ${{ github.sha }}
       - run: |
-          cat kubectl_deploy/deployment.yaml | envsubst > deployments/deployment.yaml
-          cat kubectl_deploy/ingress.yaml | envsubst > deployments/ingress.yaml
-          cat kubectl_deploy/service.yaml | envsubst > deployments/service.yaml
-          cat kubectl_deploy/serviceaccount.yaml | envsubst > deployments/serviceaccount.yaml
-          cat kubectl_deploy/dashboard-cloud-platform-aws-metrics.yaml | envsubst > deployments/dashboard-cloud-platform-aws-metrics.yaml
-          cat kubectl_deploy/dashboard-cloud-platform-namespace-metrics.yaml | envsubst > deployments/dashboard-cloud-platform-namespace-metrics.yaml
-          cat kubectl_deploy/dashboard-cloud-platform-performance-metrics.yaml | envsubst > deployments/dashboard-cloud-platform-performance-metrics.yaml
+          cat deployments/templates/deployment.yaml | envsubst > deployments/deployment.yaml
+          cat deployments/templates/ingress.yaml | envsubst > deployments/ingress.yaml
+          cat deployments/templates/service.yaml | envsubst > deployments/service.yaml
+          cat deployments/templates/servicemonitor.yaml | envsubst > deployments/servicemonitor.yaml
+          cat deployments/temlates/dashboard-cloud-platform-aws-metrics.yaml | envsubst > deployments/dashboard-cloud-platform-aws-metrics.yaml
+          cat deployments/temlates/dashboard-cloud-platform-namespace-metrics.yaml | envsubst > deployments/dashboard-cloud-platform-namespace-metrics.yaml
+          cat deployments/temlates/dashboard-cloud-platform-performance-metrics.yaml | envsubst > deployments/dashboard-cloud-platform-performance-metrics.yaml
         env:
           IMAGE_TAG: ${{ github.sha }}
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
