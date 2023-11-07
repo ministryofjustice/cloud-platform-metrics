@@ -524,6 +524,132 @@ data:
     				"align": false,
     				"alignLevel": null
     			}
+    		},
+    		{
+    			"aliasColors": {},
+    			"bars": false,
+    			"dashLength": 10,
+    			"dashes": false,
+    			"datasource": "Thanos",
+    			"editable": true,
+    			"error": false,
+    			"fieldConfig": {
+    				"defaults": {
+    					"custom": {},
+    					"links": []
+    				},
+    				"overrides": []
+    			},
+    			"fill": 1,
+    			"fillGradient": 0,
+    			"grid": {},
+    			"gridPos": {
+    				"h": 10,
+    				"w": 24,
+    				"x": 0,
+    				"y": 15
+    			},
+    			"hiddenSeries": false,
+    			"id": 3,
+    			"isNew": true,
+    			"legend": {
+    				"alignAsTable": true,
+    				"current": true,
+    				"hideEmpty": false,
+    				"hideZero": false,
+    				"show": true,
+    				"sort": "current",
+    				"sortDesc": true,
+    				"total": false,
+    				"values": true
+    			},
+    			"lines": true,
+    			"linewidth": 2,
+    			"links": [],
+    			"nullPointMode": "connected",
+    			"options": {
+    				"alertThreshold": true
+    			},
+    			"percentage": false,
+    			"pluginVersion": "7.5.9",
+    			"pointradius": 5,
+    			"points": false,
+    			"renderer": "flot",
+    			"seriesOverrides": [],
+    			"spaceLength": 10,
+    			"stack": false,
+    			"steppedLine": true,
+    			"targets": [{
+    					"expr": "count(count(cloud_platform_metrics_namespace_details{is_production='true', application=~'.*'}) by (application))",
+    					"application": {
+    						"filter": ""
+    					},
+    					"expression": "",
+    					"functions": [],
+    					"group": {
+    						"filter": ""
+    					},
+    					"highResolution": false,
+    					"host": {
+    						"filter": ""
+    					},
+    					"id": "",
+    					"item": {
+    						"filter": ""
+    					},
+    					"matchExact": true,
+    					"metricName": "5. Cloud Platform Unique Applications (Production)",
+    					"mode": 0,
+    					"namespace": "monitoring",
+    					"options": {
+    						"showDisabledItems": false
+    					},
+    					"period": "",
+    					"refId": "A",
+    					"returnData": false,
+    					"statistics": [
+    						"Average"
+    					]
+    				}
+    			],
+    			"thresholds": [],
+    			"timeFrom": null,
+    			"timeRegions": [],
+    			"timeShift": null,
+    			"title": "5. Cloud Platform Unique Applications (Production)",
+    			"tooltip": {
+    				"msResolution": false,
+    				"shared": true,
+    				"sort": 2,
+    				"value_type": "cumulative"
+    			},
+    			"type": "graph",
+    			"xaxis": {
+    				"buckets": null,
+    				"mode": "time",
+    				"name": null,
+    				"show": true,
+    				"values": []
+    			},
+    			"yaxes": [{
+    					"$$hashKey": "object:75",
+    					"label": null,
+    					"logBase": 1,
+    					"show": true
+    				},
+    				{
+    					"$$hashKey": "object:76",
+    					"format": "short",
+    					"label": null,
+    					"logBase": 1,
+    					"show": false
+    				}
+    			],
+    			"yaxis": {
+                                "decimals": 0,
+    				"align": false,
+    				"alignLevel": null
+    			}
     		}
     	],
     	"refresh": false,
