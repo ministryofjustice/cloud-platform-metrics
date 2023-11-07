@@ -3,7 +3,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: cloud-platforms-performance-metrics
-  namespace: cloud-platform-metrics
+  namespace: ${NAMESPACE}
   labels:
     grafana_dashboard: ""
 data:
