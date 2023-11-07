@@ -33,3 +33,13 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+  - package-ecosystem: "gomod"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "wednesday"
+      time: "09:00"
+    groups:
+      go:
+        patterns:
+          - "*"
