@@ -3,7 +3,7 @@ module ministryofjustice/cloud-platform-metrics
 go 1.21
 
 require (
-	github.com/aws/aws-sdk-go-v2 v1.22.1
+	github.com/aws/aws-sdk-go-v2 v1.22.2
 	github.com/aws/aws-sdk-go-v2/config v1.22.1
 	github.com/aws/aws-sdk-go-v2/service/costexplorer v1.32.0
 	github.com/go-kit/log v0.2.1
