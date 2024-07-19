@@ -7,7 +7,13 @@ metadata:
     external-dns.alpha.kubernetes.io/set-identifier: cp-metrics-app-${NAMESPACE}-green
     external-dns.alpha.kubernetes.io/aws-weight: "100"
     nginx.ingress.kubernetes.io/server-snippet: location = /metrics { deny all; }
+    nginx.ingress.kubernetes.io/enable-modsecurity: "true"
+    nginx.ingress.kubernetes.io/modsecurity-snippet: |
+      SecRuleEngine On
+      SecDefaultAction "phase:2,pass,log,tag:github_team=webops"
+      SecDefaultAction "phase:4,pass,log,tag:github_team=webops"
 spec:
+  ingressClassName: modsec
   tls:
     - hosts:
         - cloud-platform-metrics.apps.live.cloud-platform.service.justice.gov.uk
