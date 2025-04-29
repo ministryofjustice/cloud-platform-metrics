@@ -6,6 +6,7 @@ metadata:
   annotations:
     external-dns.alpha.kubernetes.io/set-identifier: cp-metrics-app-${NAMESPACE}-green
     external-dns.alpha.kubernetes.io/aws-weight: "100"
+    nginx.ingress.kubernetes.io/server-snippet: location = /metrics { deny all; }
 spec:
   tls:
     - hosts:
